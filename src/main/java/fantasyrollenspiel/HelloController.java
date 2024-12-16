@@ -29,12 +29,12 @@ public class HelloController {
         // Starte die Orc-Animation
         animations.orcAnimation();
 
-        //Skelett
+        //Rogue
         animations = new Animations();
 
         animations.monsterImage = monsterImage;
 
-        animations.skelettonAnimation();
+        animations.rogueAnimation();
         // Skelett Ende
 
     }

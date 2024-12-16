@@ -16,6 +16,9 @@ public class Animations {
 
     final String spritePathSke = getClass().getResource("/Bilder/Idle-Sheet-ske.png").toExternalForm();
 
+    final String spritePathRog = getClass().getResource("/Bilder/Idle-Sheet-Rogue.png").toExternalForm();
+
+
     public void orcAnimation(){
         Animation orc = new SpriteAnimation(
                 heroImage,
@@ -43,6 +46,20 @@ public class Animations {
 
         skeletton.setCycleCount(Animation.INDEFINITE);
         skeletton.play();
+    }
+
+    public void rogueAnimation(){
+        Animation rogue = new SpriteAnimation(
+                monsterImage,
+                Duration.millis(500),
+                4, 4,
+                0, 0,
+                32, 32,
+                spritePathRog
+        );
+
+        rogue.setCycleCount(Animation.INDEFINITE);
+        rogue.play();
     }
 
 }
