@@ -12,11 +12,11 @@ public class Animations {
     @FXML
     public ImageView monsterImage;
 
-    final String spritePathOrc = getClass().getResource("/Bilder/Idle-Sheet.png").toExternalForm();
+    final String spritePathOrc = getClass().getResource("/Bilder/Sprites/Idle-Sheet.png").toExternalForm();
 
-    final String spritePathSke = getClass().getResource("/Bilder/Idle-Sheet-ske.png").toExternalForm();
+    final String spritePathSke = getClass().getResource("/Bilder/Sprites/Idle-Sheet-ske.png").toExternalForm();
 
-    final String spritePathRog = getClass().getResource("/Bilder/Idle-Sheet-Rogue.png").toExternalForm();
+    final String spritePathRog = getClass().getResource("/Bilder/Sprites/Idle-Sheet-Rogue.png").toExternalForm();
 
 
     public void orcAnimation(){
