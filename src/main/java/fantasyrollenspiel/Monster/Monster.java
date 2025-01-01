@@ -1,43 +1,60 @@
 package fantasyrollenspiel.Monster;
 
-public class Monster{
-    // Anfang Attribute
+import fantasyrollenspiel.Hero.Hero;
+import java.util.Random;
+
+public class Monster {
     private String name;
     private int health;
+    private int armor;
+    private String weaponImage;
+    private int weaponDamage;
+    private Random random;
 
-    public Monster(String name, int health) {
+    public Monster(String name, int health, int armor, String weaponImage, int weaponDamage) {
         this.name = name;
         this.health = health;
-
+        this.armor = armor;
+        this.weaponImage = weaponImage;
+        this.weaponDamage = weaponDamage;
+        this.random = new Random();
     }
 
-    public void attack() {
-        System.out.println(name + " greift an!");
-    }
-
-    public void takeDamage(int damage) {
-        health -= damage;
-        System.out.println(name + " erleidet " + damage + " Schaden. Verbleibende Gesundheit: " + health);
-    }
-
-    // Getter und Setter
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getHealth() {
         return health;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
+    public int getArmor() {
+        return armor;
+    }
+
+    public String getWeaponImage() {
+        return weaponImage;
+    }
+
+    public int getWeaponDamage() {
+        return weaponDamage;
+    }
+
+    public void takeDamage(int damage) {
+        if (armor > 0) {
+            armor = Math.max(armor - damage, 0);
+        } else {
+            health = Math.max(health - damage, 0);
+        }
+    }
+
+    public void attack(Hero hero) {
+        int damage = calculateDamage();
+        hero.takeDamage(damage);
+        System.out.println(name + " greift an und verursacht " + damage + " Schaden!");
+    }
+
+    private int calculateDamage() {
+        return weaponDamage;
     }
 }
-
-// Ende Methoden
-
-

@@ -1,24 +1,21 @@
 package fantasyrollenspiel.Monster;
 
-public class Skelett extends Monster {
-    private String weapon;
+import fantasyrollenspiel.Hero.Hero;
 
-    public Skelett(String name, int health, String weapon) {
-        super(name, health);
-        this.weapon = weapon;
+public class Skelett extends Monster {
+
+    public Skelett(String name, int health, int armor, String weaponImage, int weaponDamage) {
+        super(name, health, armor, weaponImage, weaponDamage);
     }
 
     @Override
-    public void attack() {
-        System.out.println(getName() + " greift mit " + weapon + " an!");
+    public void attack(Hero hero) {
+        int damage = calculateDamage();
+        hero.takeDamage(damage);
+        System.out.println(getName() + " greift an und verursacht " + damage + " Schaden!");
     }
 
-    // Getter und Setter
-    public String getWeapon() {
-        return weapon;
-    }
-
-    public void setWeapon(String weapon) {
-        this.weapon = weapon;
+    private int calculateDamage() {
+        return getWeaponDamage();
     }
 }

@@ -3,8 +3,8 @@ package fantasyrollenspiel.Hero;
 public class orc extends Hero {
     private String tribe;
 
-    public orc(String name, int health, int attackPower, String tribe) {
-        super(name, health, attackPower);
+    public orc(String name, int health, int attackPower, int armor, String tribe) {
+        super(name, health, attackPower, armor);
         this.tribe = tribe;
     }
 

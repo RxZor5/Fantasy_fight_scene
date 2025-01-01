@@ -18,14 +18,16 @@
 
         <!-- Image vom Monster -->
         <ImageView fx:id="monsterImage" fitHeight="200.0" fitWidth="150.0" />
+        <ImageView fx:id="monsterWeaponImage" fitHeight="200.0" fitWidth="150.0" />
 
     </HBox>
 
     <HBox spacing="10" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
         <!-- GridPane für 2x2 Buttons -->
-        <GridPane hgap="10" vgap="10">
+        <GridPane fx:id="gridPane" hgap="10" vgap="10">
             <Button text="Ultra-Attack" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <Button text="Button 4" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <!-- Hier wird der tränkeButton platziert -->
+            <!-- <Button text="Button 4" GridPane.columnIndex="1" GridPane.rowIndex="1" /> -->
             <ImageView fx:id="ivAttack" fitHeight="31.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                 <image>
                     <Image url="@../Bilder/Buttons/Button_Red_3Slides.png" />
@@ -36,12 +38,21 @@
                     <Image url="@../Bilder/Buttons/Button_Blue_3Slides.png" />
                 </image>
             </ImageView>
-
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
         </GridPane>
     </HBox>
 
     <!-- Image vom Helden -->
     <ImageView fx:id="heroImage" fitHeight="200.0" fitWidth="150.0" layoutX="14.0" layoutY="386.0" />
+    <ImageView fx:id="heroWeaponImage" fitHeight="200.0" fitWidth="150.0" layoutX="250.0" layoutY="324.0" />
+
     <ImageView fitHeight="98.0" fitWidth="135.0" layoutX="390.0" layoutY="205.0" pickOnBounds="true" preserveRatio="true">
         <image>
             <Image url="@../Bilder/Buttons/Ribbon_Red_3Slides.png" />
@@ -57,7 +68,7 @@
 
     <!-- Healthbars -->
     <ProgressBar fx:id="heroHealthBar" layoutX="10.0" layoutY="336.0" prefWidth="200.0" />
-   <ProgressBar fx:id="heroArmorBar" layoutX="127.0" layoutY="427.0" prefWidth="200.0" rotate="90.0" />
+    <ProgressBar fx:id="heroArmorBar" layoutX="127.0" layoutY="427.0" prefWidth="200.0" rotate="90.0" />
     <ProgressBar fx:id="monsterArmorBar" layoutX="538.0" layoutY="241.0" prefWidth="200.0" />
     <ProgressBar fx:id="monsterHealthBar" layoutX="538.0" layoutY="219.0" prefWidth="200.0" />
 </AnchorPane>

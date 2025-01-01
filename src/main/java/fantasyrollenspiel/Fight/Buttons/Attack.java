@@ -1,4 +1,4 @@
-package fantasyrollenspiel.Buttons;
+package fantasyrollenspiel.Fight.Buttons;
 
 import java.util.Random;
 import javafx.scene.control.ProgressBar;

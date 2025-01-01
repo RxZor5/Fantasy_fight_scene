@@ -12,4 +12,8 @@ module fantasyrollenspiel {
     opens fantasyrollenspiel.Hero to javafx.fxml;
     exports fantasyrollenspiel.Animations;
     opens fantasyrollenspiel.Animations to javafx.fxml;
+    exports fantasyrollenspiel.Armor;
+    opens fantasyrollenspiel.Armor to javafx.fxml;
+    exports fantasyrollenspiel.Materialien;
+    opens fantasyrollenspiel.Materialien to javafx.fxml;
 }

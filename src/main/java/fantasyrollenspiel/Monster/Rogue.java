@@ -1,24 +1,21 @@
 package fantasyrollenspiel.Monster;
 
-public class Rogue extends Monster {
-    private int stealthLevel;
+import fantasyrollenspiel.Hero.Hero;
 
-    public Rogue(String name, int health, int stealthLevel) {
-        super(name, health);
-        this.stealthLevel = stealthLevel;
+public class Rogue extends Monster {
+
+    public Rogue(String name, int health, int armor, String weaponImage, int weaponDamage) {
+        super(name, health, armor, weaponImage, weaponDamage);
     }
 
     @Override
-    public void attack() {
-        System.out.println(getName() + " greift aus dem Schatten an mit Stealth Level " + stealthLevel + "!");
+    public void attack(Hero hero) {
+        int damage = calculateDamage();
+        hero.takeDamage(damage);
+        System.out.println(getName() + " greift an und verursacht " + damage + " Schaden!");
     }
 
-    // Getter und Setter
-    public int getStealthLevel() {
-        return stealthLevel;
-    }
-
-    public void setStealthLevel(int stealthLevel) {
-        this.stealthLevel = stealthLevel;
+    private int calculateDamage() {
+        return getWeaponDamage();
     }
 }

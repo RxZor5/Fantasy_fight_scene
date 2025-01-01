@@ -1,4 +1,4 @@
-package fantasyrollenspiel.Buttons;
+package fantasyrollenspiel.Fight.Buttons;
 
 import javafx.stage.Modality;
 import javafx.stage.Stage;

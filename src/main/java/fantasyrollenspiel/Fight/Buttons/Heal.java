@@ -1,4 +1,4 @@
-package fantasyrollenspiel.Buttons;
+package fantasyrollenspiel.Fight.Buttons;
 
 public class Heal extends GameButton {
     private int heroHealth;

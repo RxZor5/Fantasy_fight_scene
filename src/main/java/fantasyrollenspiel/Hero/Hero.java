@@ -4,11 +4,13 @@ public class Hero {
     private String name;
     private int health;
     private int attackPower;
+    private int armor;
 
-    public Hero(String name, int health, int attackPower) {
+    public Hero(String name, int health, int attackPower, int armor) {
         this.name = name;
         this.health = health;
         this.attackPower = attackPower;
+        this.armor = armor;
     }
 
     public void attack() {
@@ -16,7 +18,11 @@ public class Hero {
     }
 
     public void takeDamage(int damage) {
-        health -= damage;
+        if (armor > 0) {
+            armor = Math.max(armor - damage, 0);
+        } else {
+            health = Math.max(health - damage, 0);
+        }
         System.out.println(name + " erleidet " + damage + " Schaden. Verbleibende Gesundheit: " + health);
     }
 
@@ -43,5 +49,13 @@ public class Hero {
 
     public void setAttackPower(int attackPower) {
         this.attackPower = attackPower;
+    }
+
+    public int getArmor() {
+        return armor;
+    }
+
+    public void setArmor(int armor) {
+        this.armor = armor;
     }
 }

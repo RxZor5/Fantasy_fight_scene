@@ -1,17 +1,16 @@
 package fantasyrollenspiel;
 
+import fantasyrollenspiel.Fight.Buttons.Tränke;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ProgressBar;
 
 public class HelloApplication extends Application {
-
-    private int heroHealth = 100;
-    private int enemyHealth = 100;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -19,19 +18,17 @@ public class HelloApplication extends Application {
         AnchorPane root = loader.load();
 
         Scene scene = new Scene(root);
-        HelloController controller = loader.getController();
+        HelloController controller = 
+                loader.getController();
 
-        // Erstellen und Hinzufügen der neuen Buttons und Healthbars
-        VBox buttonBox = new VBox(10);
+        // Get the GridPane from the FXML file
+        GridPane gridPane = (GridPane) root.lookup("#gridPane");
 
-        ProgressBar heroHealthBar = new ProgressBar(heroHealth / 100.0);
-        ProgressBar enemyHealthBar = new ProgressBar(enemyHealth / 100.0);
+        // Create the new tränkeButton
+        Tränke tränkeButton = new Tränke(primaryStage);
 
-        fantasyrollenspiel.Buttons.Tränke tränkeButton = new fantasyrollenspiel.Buttons.Tränke(primaryStage);
-        buttonBox.getChildren().addAll(tränkeButton);
-
-
-        root.getChildren().add(buttonBox);
+        // Add the tränkeButton to the GridPane at the position of Button 4 (column 1, row 1)
+        gridPane.add(tränkeButton, 1, 1);
 
         primaryStage.setScene(scene);
         primaryStage.show();

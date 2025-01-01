@@ -1,4 +1,4 @@
-package fantasyrollenspiel.Buttons;
+package fantasyrollenspiel.Fight.Buttons;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
