@@ -3,30 +3,18 @@ package fantasyrollenspiel.Hero;
 public class Hero {
     private String name;
     private int health;
-    private int attackPower;
     private int armor;
+    private int coins;
+    private int iron;
 
-    public Hero(String name, int health, int attackPower, int armor) {
+    public Hero(String name, int health, int armor, int coins) {
         this.name = name;
         this.health = health;
-        this.attackPower = attackPower;
         this.armor = armor;
+        this.coins = coins;
+        this.iron = 0;
     }
 
-    public void attack() {
-        System.out.println(name + " greift mit " + attackPower + " Angriffskraft an!");
-    }
-
-    public void takeDamage(int damage) {
-        if (armor > 0) {
-            armor = Math.max(armor - damage, 0);
-        } else {
-            health = Math.max(health - damage, 0);
-        }
-        System.out.println(name + " erleidet " + damage + " Schaden. Verbleibende Gesundheit: " + health);
-    }
-
-    // Getter und Setter
     public String getName() {
         return name;
     }
@@ -43,19 +31,34 @@ public class Hero {
         this.health = health;
     }
 
-    public int getAttackPower() {
-        return attackPower;
-    }
-
-    public void setAttackPower(int attackPower) {
-        this.attackPower = attackPower;
-    }
-
     public int getArmor() {
         return armor;
     }
 
     public void setArmor(int armor) {
         this.armor = armor;
+    }
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public void addCoins(int amount) {
+        this.coins += amount;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+
+    public int getIron() {
+        return iron;
+    }
+
+    public void addIron(int amount) {
+        this.iron += amount;
+    }
+
+    public void takeDamage(int damage) {
     }
 }

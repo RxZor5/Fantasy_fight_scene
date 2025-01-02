@@ -1,21 +1,21 @@
 package fantasyrollenspiel;
 
 import fantasyrollenspiel.Animations.Animations;
-import fantasyrollenspiel.Armor.Armor;
-import fantasyrollenspiel.Materialien.Eisen;
 import fantasyrollenspiel.Fight.DecideTurn;
 import fantasyrollenspiel.Fight.ProgressBarManager;
 import fantasyrollenspiel.Fight.Rounds.LevelManager;
 import fantasyrollenspiel.Hero.Hero;
-import fantasyrollenspiel.Monster.Monster;
+import fantasyrollenspiel.Fight.Buttons.Tränke;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import java.util.Random;
 
-public class HelloController {
+public class FightController {
 
     @FXML
     private ImageView heroImage;
@@ -53,6 +53,18 @@ public class HelloController {
     @FXML
     private Label lMonsterName;
 
+    @FXML
+    private GridPane gridPane;
+
+    @FXML
+    private Button backButton;
+
+    @FXML
+    private Label coinsEarnedLabel;
+
+    @FXML
+    private Label ironLabel;
+
     private Animations animations;
     private ProgressBarManager progressBarManager;
     private DecideTurn decideTurn;
@@ -60,23 +72,23 @@ public class HelloController {
     private LevelManager levelManager;
     private Hero hero;
 
+    private TileMapController tileMapController;
+
     @FXML
     public void initialize() {
         random = new Random();
         decideTurn = new DecideTurn();
 
-        hero = new Hero("Spieler", 100, 20, 50);
+        hero = new Hero("Spieler", 100, 20, 0); // Start with 0 coins
         progressBarManager = new ProgressBarManager(heroHealthBar, monsterHealthBar, heroArmorBar, monsterArmorBar);
         levelManager = new LevelManager(hero, progressBarManager);
 
-        // Initialize animations
         animations = new Animations();
         animations.heroImage = heroImage;
-        animations.orcAnimation();
+        animations.orcAnimation(heroImage);
         animations.monsterImage = monsterImage;
         animations.rogueAnimation();
 
-        // Set button images
         final String AttackButton = getClass().getResource("/Bilder/Buttons/Button_Red_3Slides.png").toExternalForm();
         Image Attack = new Image(AttackButton);
         ivAttack.setImage(Attack);
@@ -85,18 +97,18 @@ public class HelloController {
         Image Heal = new Image(HealButton);
         ivHeal.setImage(Heal);
 
-        // Button actions
         ivAttack.setOnMouseClicked(event -> attackAction());
         ivHeal.setOnMouseClicked(event -> healAction());
 
-        // Initialize names
         setNames("Spieler", "Monster");
-
-        // Initialize weapon images
         updateWeaponImages();
-
-        // Start game
+        updateCoinsEarnedLabel();
+        updateIronLabel();
         startGame();
+    }
+
+    public void setTileMapController(TileMapController controller) {
+        this.tileMapController = controller;
     }
 
     public void setNames(String heroName, String monsterName) {
@@ -114,13 +126,19 @@ public class HelloController {
         monsterWeaponImage.setImage(monsterWeapon);
     }
 
+    private void updateCoinsEarnedLabel() {
+        coinsEarnedLabel.setText("Coins Earned: " + hero.getCoins());
+    }
+
+    private void updateIronLabel() {
+        ironLabel.setText("Iron: " + hero.getIron());
+    }
+
     private void startGame() {
         if (decideTurn.isPlayerTurn()) {
             showAlert("Spielbeginn", "Der Spieler beginnt!");
-            System.out.println("Der Spieler beginnt!");
         } else {
             showAlert("Spielbeginn", "Das Monster beginnt!");
-            System.out.println("Das Monster beginnt!");
             monsterAttack();
         }
     }
@@ -134,8 +152,14 @@ public class HelloController {
 
         if (progressBarManager.getEnemyHealth() == 0) {
             showAlert("Victory!", "Der Gegner wurde besiegt!");
+            int earnedCoins = (random.nextInt(5) + 1) * levelManager.getCurrentLevel();  // Apply multiplier based on current level
+            int earnedIron = random.nextDouble() <= levelManager.getIronChance(levelManager.getCurrentLevel()) ? 1 : 0;
+            hero.addCoins(earnedCoins);
+            hero.addIron(earnedIron);
+            updateCoinsEarnedLabel();
+            updateIronLabel();
             levelManager.nextLevel();
-            updateWeaponImages(); // Aktualisiere das Waffenbild nach dem Levelaufstieg
+            updateWeaponImages();
             return;
         }
 
@@ -173,5 +197,22 @@ public class HelloController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void addTränkeButton(Tränke tränkeButton) {
+        gridPane.add(tränkeButton, 1, 1);
+    }
+
+    @FXML
+    private void handleBackButton() {
+        if (tileMapController != null) {
+            tileMapController.addCoins(hero.getCoins());
+            tileMapController.addIron(hero.getIron());
+        }
+        try {
+            StartGame.switchScene("/Map/map.fxml", hero.getCoins(), hero.getIron());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

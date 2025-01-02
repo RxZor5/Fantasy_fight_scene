@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fantasyrollenspiel.HelloController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fantasyrollenspiel.FightController">
     <HBox spacing="10" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <!-- Battlelog Textfeld -->
         <Label fx:id="lbattleLog" prefHeight="200.0" prefWidth="400.0" />
@@ -19,7 +19,6 @@
         <!-- Image vom Monster -->
         <ImageView fx:id="monsterImage" fitHeight="200.0" fitWidth="150.0" />
         <ImageView fx:id="monsterWeaponImage" fitHeight="200.0" fitWidth="150.0" />
-
     </HBox>
 
     <HBox spacing="10" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
@@ -27,7 +26,6 @@
         <GridPane fx:id="gridPane" hgap="10" vgap="10">
             <Button text="Ultra-Attack" GridPane.columnIndex="0" GridPane.rowIndex="1" />
             <!-- Hier wird der tränkeButton platziert -->
-            <!-- <Button text="Button 4" GridPane.columnIndex="1" GridPane.rowIndex="1" /> -->
             <ImageView fx:id="ivAttack" fitHeight="31.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                 <image>
                     <Image url="@../Bilder/Buttons/Button_Red_3Slides.png" />
@@ -38,14 +36,14 @@
                     <Image url="@../Bilder/Buttons/Button_Blue_3Slides.png" />
                 </image>
             </ImageView>
-         <columnConstraints>
-            <ColumnConstraints />
-            <ColumnConstraints />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-         </rowConstraints>
+            <columnConstraints>
+                <ColumnConstraints />
+                <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
         </GridPane>
     </HBox>
 
@@ -71,4 +69,13 @@
     <ProgressBar fx:id="heroArmorBar" layoutX="127.0" layoutY="427.0" prefWidth="200.0" rotate="90.0" />
     <ProgressBar fx:id="monsterArmorBar" layoutX="538.0" layoutY="241.0" prefWidth="200.0" />
     <ProgressBar fx:id="monsterHealthBar" layoutX="538.0" layoutY="219.0" prefWidth="200.0" />
+
+    <!-- Back button -->
+    <Button fx:id="backButton" layoutX="-6.0" layoutY="-2.0" onAction="#handleBackButton" text="Back" />
+
+    <!-- Label for earned coins -->
+    <Label fx:id="coinsEarnedLabel" layoutY="316.0" text="Coins Earned: 0" />
+
+    <!-- Label for earned iron -->
+    <Label fx:id="ironLabel" layoutY="346.0" text="Iron: 0" />
 </AnchorPane>

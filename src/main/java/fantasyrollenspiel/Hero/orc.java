@@ -8,7 +8,7 @@ public class orc extends Hero {
         this.tribe = tribe;
     }
 
-    @Override
+
     public void attack() {
         System.out.println(getName() + " aus dem Stamm " + tribe + " greift mit roher Gewalt an!");
     }

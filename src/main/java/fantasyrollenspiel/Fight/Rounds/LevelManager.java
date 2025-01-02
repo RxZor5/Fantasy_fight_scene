@@ -3,7 +3,8 @@ package fantasyrollenspiel.Fight.Rounds;
 import fantasyrollenspiel.Monster.Monster;
 import fantasyrollenspiel.Hero.Hero;
 import fantasyrollenspiel.Fight.ProgressBarManager;
-import javafx.scene.image.Image;
+import java.io.*;
+import java.util.Random;
 
 public class LevelManager {
 
@@ -11,37 +12,46 @@ public class LevelManager {
     private Hero hero;
     private ProgressBarManager progressBarManager;
     private Monster currentMonster;
+    private Random random;
 
     public LevelManager(Hero hero, ProgressBarManager progressBarManager) {
-        this.currentLevel = 1;
         this.hero = hero;
         this.progressBarManager = progressBarManager;
+        this.random = new Random();
+        loadCurrentLevel();
         this.currentMonster = createMonsterForLevel(currentLevel);
         updateProgressBars();
     }
 
     public void nextLevel() {
-        if (currentLevel < 20) {
-            currentLevel++;
-            resetHeroStats();
-            // Erstelle ein neues Monster für das nächste Level
-            currentMonster = createMonsterForLevel(currentLevel);
-            // Update den Fortschrittsbalken und andere relevante Informationen
-            updateProgressBars();
-        } else {
-            System.out.println("Gratulation! Du hast das letzte Level erreicht.");
+        if (random.nextDouble() <= getIronChance(currentLevel)) {
+            hero.addIron(1);
         }
+
+        currentLevel++;
+        saveCurrentLevel(currentLevel); // Speichere das aktuelle Level nach jedem Level-Up
+        resetHeroStats();
+        currentMonster = createMonsterForLevel(currentLevel);
+        updateProgressBars();
+    }
+
+    public double getIronChance(int level) {
+        return Math.min(0.05 * level, 1.0);  // Calculate the chance of earning iron, capped at 100%
+    }
+
+    public int calculateCoins() {
+        return currentLevel * (random.nextInt(5) + 1); // Multipliziere den Coin-Wert mit dem aktuellen Level
     }
 
     public void resetHeroStats() {
-        hero.setHealth(100);  // Setze die Gesundheit des Helden zurück
+        hero.setHealth(100);  // Reset hero's health
         progressBarManager.setHeroHealth(100);
-        hero.setArmor(50);  // Setze die Rüstung des Helden zurück
+        hero.setArmor(50);  // Reset hero's armor
         progressBarManager.setHeroArmor(50);
     }
 
     public void stayAtCurrentLevel() {
-        System.out.println("Du bist im aktuellen Level stecken geblieben.");
+        System.out.println("You've stayed at the current level.");
     }
 
     private Monster createMonsterForLevel(int level) {
@@ -81,5 +91,43 @@ public class LevelManager {
 
     public Monster getCurrentMonster() {
         return currentMonster;
+    }
+
+    public void defeatMonster() {
+        int monsterCoins = calculateCoins(); // Verwende die neue Berechnungsmethode für Coins
+        hero.addCoins(monsterCoins);
+        nextLevel();
+    }
+
+    // Speichere das aktuelle Level in einer Datei
+    public void saveCurrentLevel(int level) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("currentLevel.txt"))) {
+            writer.write(String.valueOf(level));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Lade das aktuelle Level aus der Datei
+    private void loadCurrentLevel() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("currentLevel.txt"))) {
+            String line = reader.readLine();
+            if (line != null) {
+                currentLevel = Integer.parseInt(line);
+            } else {
+                currentLevel = 1; // Wenn die Datei leer ist, beginne bei Level 1
+            }
+        } catch (IOException e) {
+            currentLevel = 1; // Wenn die Datei nicht gefunden wird, beginne bei Level 1
+        }
+    }
+
+    // Setze das Level auf 1 beim Programmende
+    public static void resetLevel() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("currentLevel.txt"))) {
+            writer.write("1");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

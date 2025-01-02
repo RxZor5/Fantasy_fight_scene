@@ -19,9 +19,9 @@ public class Animations {
     final String spritePathRog = getClass().getResource("/Bilder/Sprites/Idle-Sheet-Rogue.png").toExternalForm();
 
 
-    public void orcAnimation(){
+    public void orcAnimation(ImageView Image){
         Animation orc = new SpriteAnimation(
-                heroImage,
+                Image,
                 Duration.millis(500),
                 4, 4,
                 0, 0,

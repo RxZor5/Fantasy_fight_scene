@@ -8,7 +8,7 @@ public class knight extends Hero {
         this.weapon = weapon;
     }
 
-    @Override
+
     public void attack() {
         System.out.println(getName() + " greift mit seinem " + weapon + " an!");
     }
