@@ -19,7 +19,7 @@
         </HBox>
     </top>
     <center>
-        <ScrollPane fx:id="scrollPane" fitToWidth="true" fitToHeight="true">
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="NEVER">
             <GridPane fx:id="gridPane"/>
         </ScrollPane>
     </center>
