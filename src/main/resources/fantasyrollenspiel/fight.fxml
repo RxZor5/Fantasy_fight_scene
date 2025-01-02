@@ -11,14 +11,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fantasyrollenspiel.FightController">
-    <HBox spacing="10" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+<AnchorPane minHeight="800.0" minWidth="1000.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fantasyrollenspiel.FightController">
+    <HBox layoutX="10.0" layoutY="11.0" spacing="10" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="11.0">
+        <!-- Back button -->
+        <Button fx:id="backButton" onAction="#handleBackButton" text="Back" />
         <!-- Battlelog Textfeld -->
         <Label fx:id="lbattleLog" prefHeight="200.0" prefWidth="400.0" />
-
         <!-- Image vom Monster -->
         <ImageView fx:id="monsterImage" fitHeight="200.0" fitWidth="150.0" />
-        <ImageView fx:id="monsterWeaponImage" fitHeight="200.0" fitWidth="150.0" />
+        <ImageView fx:id="monsterWeaponImage" fitHeight="200.0" fitWidth="202.0" />
     </HBox>
 
     <HBox spacing="10" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
@@ -48,34 +49,30 @@
     </HBox>
 
     <!-- Image vom Helden -->
-    <ImageView fx:id="heroImage" fitHeight="200.0" fitWidth="150.0" layoutX="14.0" layoutY="386.0" />
-    <ImageView fx:id="heroWeaponImage" fitHeight="200.0" fitWidth="150.0" layoutX="250.0" layoutY="324.0" />
+    <ImageView fx:id="heroImage" fitHeight="200.0" fitWidth="150.0" layoutX="14.0" layoutY="585.0" />
+    <ImageView fx:id="heroWeaponImage" fitHeight="200.0" fitWidth="200.0" layoutX="250.0" layoutY="523.0" />
 
-    <ImageView fitHeight="98.0" fitWidth="135.0" layoutX="390.0" layoutY="205.0" pickOnBounds="true" preserveRatio="true">
+    <ImageView fitHeight="98.0" fitWidth="135.0" layoutX="615.0" layoutY="212.0" pickOnBounds="true" preserveRatio="true">
         <image>
             <Image url="@../Bilder/Buttons/Ribbon_Red_3Slides.png" />
         </image>
     </ImageView>
-    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="227.0" layoutY="524.0" pickOnBounds="true" preserveRatio="true">
+    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="227.0" layoutY="723.0" pickOnBounds="true" preserveRatio="true">
         <image>
             <Image url="@../Bilder/Buttons/Ribbon_Blue_3Slides.png" />
         </image>
     </ImageView>
-    <Label fx:id="lHeroName" layoutX="281.0" layoutY="536.0" prefHeight="30.0" prefWidth="103.0" text="Herbert" />
-    <Label fx:id="lMonsterName" layoutX="427.0" layoutY="211.0" prefHeight="25.0" prefWidth="62.0" text="Gustav" />
+    <Label fx:id="lHeroName" layoutX="281.0" layoutY="735.0" prefHeight="30.0" prefWidth="103.0" text="Herbert" />
+    <Label fx:id="lMonsterName" layoutX="651.0" layoutY="213.0" prefHeight="25.0" prefWidth="62.0" text="Gustav" />
 
     <!-- Healthbars -->
-    <ProgressBar fx:id="heroHealthBar" layoutX="10.0" layoutY="336.0" prefWidth="200.0" />
-    <ProgressBar fx:id="heroArmorBar" layoutX="127.0" layoutY="427.0" prefWidth="200.0" rotate="90.0" />
-    <ProgressBar fx:id="monsterArmorBar" layoutX="538.0" layoutY="241.0" prefWidth="200.0" />
-    <ProgressBar fx:id="monsterHealthBar" layoutX="538.0" layoutY="219.0" prefWidth="200.0" />
+    <ProgressBar fx:id="heroHealthBar" layoutX="10.0" layoutY="535.0" prefWidth="200.0" />
+    <ProgressBar fx:id="heroArmorBar" layoutX="127.0" layoutY="626.0" prefWidth="200.0" rotate="90.0" />
+    <ProgressBar fx:id="monsterArmorBar" layoutX="762.0" layoutY="246.0" prefWidth="200.0" />
+    <ProgressBar fx:id="monsterHealthBar" layoutX="762.0" layoutY="224.0" prefWidth="200.0" />
 
-    <!-- Back button -->
-    <Button fx:id="backButton" layoutX="-6.0" layoutY="-2.0" onAction="#handleBackButton" text="Back" />
-
-    <!-- Label for earned coins -->
-    <Label fx:id="coinsEarnedLabel" layoutY="316.0" text="Coins Earned: 0" />
-
-    <!-- Label for earned iron -->
-    <Label fx:id="ironLabel" layoutY="346.0" text="Iron: 0" />
+    <!-- Labels for stats -->
+    <Label fx:id="coinsEarnedLabel" layoutX="10.0" layoutY="454.0" text="Coins Earned: 0" />
+    <Label fx:id="ironLabel" layoutX="17.0" layoutY="417.0" text="Iron: 0" />
+    <Label fx:id="xpLabel" layoutX="17.0" layoutY="380.0" text="XP: 0" />
 </AnchorPane>

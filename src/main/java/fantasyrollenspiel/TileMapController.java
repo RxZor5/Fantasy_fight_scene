@@ -28,6 +28,9 @@ public class TileMapController {
     private Label ironLabel;
 
     @FXML
+    private Label playerLevelLabel;  // Spielerlevel-Label
+
+    @FXML
     private ProgressBar levelProgressBar;
 
     private ImageView player;
@@ -38,7 +41,9 @@ public class TileMapController {
 
     private int coins = 0;
     private int iron = 0;
-    private double levelProgress = 0.0;
+    private int xp = 0;
+    private int playerLevel = 1;
+    private int xpThreshold = 100;
 
     public void initialize() {
         animations = new Animations();
@@ -185,7 +190,7 @@ public class TileMapController {
             case E -> {
                 if (playerCol == 9 && (playerRow == 7 || playerRow == 8)) {
                     try {
-                        StartGame.switchScene("/fantasyrollenspiel/fight.fxml", coins, iron);
+                        StartGame.switchScene("/fantasyrollenspiel/fight.fxml", coins, iron, xp);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -216,7 +221,8 @@ public class TileMapController {
     private void updateStats() {
         coinsLabel.setText("Coins: " + coins);
         ironLabel.setText("Iron: " + iron);
-        levelProgressBar.setProgress(levelProgress);
+        playerLevelLabel.setText("Player Level: " + playerLevel);  // Update player level label
+        levelProgressBar.setProgress((double) xp / xpThreshold);  // Assume levelProgress is XP for now
     }
 
     public void addCoins(int amount) {
@@ -236,6 +242,16 @@ public class TileMapController {
 
     public void setIron(int amount) {
         iron = amount;
+        updateStats();
+    }
+
+    public void addXP(int amount) {
+        xp += amount;
+        updateStats();
+    }
+
+    public void setXP(int amount) {
+        xp = amount;
         updateStats();
     }
 }

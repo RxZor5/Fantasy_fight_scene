@@ -6,13 +6,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.GridPane?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="fantasyrollenspiel.TileMapController">
+<BorderPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fantasyrollenspiel.TileMapController">
     <top>
         <HBox alignment="TOP_RIGHT" spacing="10" BorderPane.alignment="TOP_LEFT">
             <Label text="Coins: " fx:id="coinsLabel"/>
             <Label text="Iron: " fx:id="ironLabel"/>
             <HBox spacing="5">
-                <Label text="Level: " />
+                <Label text="Player Level: " fx:id="playerLevelLabel"/>
                 <ProgressBar fx:id="levelProgressBar" prefWidth="200"/>
             </HBox>
         </HBox>

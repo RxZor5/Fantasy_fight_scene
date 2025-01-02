@@ -16,6 +16,7 @@ public class StartGame extends Application {
     private static Stage primaryStage;
     private static int totalCoins = 0;
     private static int totalIron = 0;
+    private static int totalXp = 0;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -26,10 +27,14 @@ public class StartGame extends Application {
     }
 
     public static void switchScene(String fxml) throws Exception {
-        switchScene(fxml, 0, 0);
+        switchScene(fxml, 0, 0, 0);
     }
 
     public static void switchScene(String fxml, int coinsEarned, int ironEarned) throws Exception {
+        switchScene(fxml, coinsEarned, ironEarned, 0);
+    }
+
+    public static void switchScene(String fxml, int coinsEarned, int ironEarned, int xpEarned) throws Exception {
         FXMLLoader loader = new FXMLLoader(StartGame.class.getResource(fxml));
         Object root = loader.load();
         Scene scene;
@@ -53,8 +58,10 @@ public class StartGame extends Application {
             TileMapController controller = loader.getController();
             totalCoins += coinsEarned;
             totalIron += ironEarned;
+            totalXp += xpEarned;
             controller.setCoins(totalCoins);  // Set the total coins in the map controller
             controller.setIron(totalIron);  // Set the total iron in the map controller
+            controller.setXP(totalXp);  // Set the total XP in the map controller
         }
     }
 

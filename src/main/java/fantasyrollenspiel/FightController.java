@@ -65,6 +65,9 @@ public class FightController {
     @FXML
     private Label ironLabel;
 
+    @FXML
+    private Label xpLabel;  // XP Label
+
     private Animations animations;
     private ProgressBarManager progressBarManager;
     private DecideTurn decideTurn;
@@ -73,6 +76,8 @@ public class FightController {
     private Hero hero;
 
     private TileMapController tileMapController;
+
+    private int xpEarned = 0;
 
     @FXML
     public void initialize() {
@@ -104,6 +109,7 @@ public class FightController {
         updateWeaponImages();
         updateCoinsEarnedLabel();
         updateIronLabel();
+        updateXpLabel();  // Update XP Label
         startGame();
     }
 
@@ -134,6 +140,10 @@ public class FightController {
         ironLabel.setText("Iron: " + hero.getIron());
     }
 
+    private void updateXpLabel() {
+        xpLabel.setText("XP: " + xpEarned);
+    }
+
     private void startGame() {
         if (decideTurn.isPlayerTurn()) {
             showAlert("Spielbeginn", "Der Spieler beginnt!");
@@ -154,10 +164,13 @@ public class FightController {
             showAlert("Victory!", "Der Gegner wurde besiegt!");
             int earnedCoins = (random.nextInt(5) + 1) * levelManager.getCurrentLevel();  // Apply multiplier based on current level
             int earnedIron = random.nextDouble() <= levelManager.getIronChance(levelManager.getCurrentLevel()) ? 1 : 0;
+            int earnedXp = (random.nextInt(6) + 3) * levelManager.getCurrentLevel();  // Random XP between 3 and 8 multiplied by level
             hero.addCoins(earnedCoins);
             hero.addIron(earnedIron);
+            xpEarned += earnedXp;
             updateCoinsEarnedLabel();
             updateIronLabel();
+            updateXpLabel();
             levelManager.nextLevel();
             updateWeaponImages();
             return;
@@ -208,9 +221,10 @@ public class FightController {
         if (tileMapController != null) {
             tileMapController.addCoins(hero.getCoins());
             tileMapController.addIron(hero.getIron());
+            tileMapController.addXP(xpEarned);  // Pass the XP to the map controller
         }
         try {
-            StartGame.switchScene("/Map/map.fxml", hero.getCoins(), hero.getIron());
+            StartGame.switchScene("/Map/map.fxml", hero.getCoins(), hero.getIron(), xpEarned);  // Pass the XP when switching scene
         } catch (Exception e) {
             e.printStackTrace();
         }
