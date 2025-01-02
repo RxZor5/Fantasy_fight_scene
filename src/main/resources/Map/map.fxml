@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.GridPane?>
@@ -18,6 +19,8 @@
         </HBox>
     </top>
     <center>
-        <GridPane fx:id="gridPane"/>
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" fitToHeight="true">
+            <GridPane fx:id="gridPane"/>
+        </ScrollPane>
     </center>
 </BorderPane>

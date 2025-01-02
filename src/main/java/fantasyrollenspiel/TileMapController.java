@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -32,6 +33,9 @@ public class TileMapController {
 
     @FXML
     private ProgressBar levelProgressBar;
+
+    @FXML
+    private ScrollPane scrollPane;  // Add ScrollPane field
 
     private ImageView player;
     private int playerRow = 0;
@@ -65,6 +69,14 @@ public class TileMapController {
 
         // Check if focus is set initially
         System.out.println("Initial GridPane has focus: " + gridPane.isFocused());
+
+        // Set focus on the GridPane when it's clicked
+        gridPane.setOnMouseClicked(event -> {
+            gridPane.requestFocus();
+        });
+
+        // Ensure ScrollPane focus policy doesn't interfere with GridPane focus
+        scrollPane.setFocusTraversable(false);
     }
 
     private void drawTileMap(String filePath) {
@@ -215,7 +227,17 @@ public class TileMapController {
             playerRow = row;
             playerCol = col;
             gridPane.add(player, playerCol, playerRow);
+            scrollToPlayer();  // Scroll to player after moving
         }
+    }
+
+    private void scrollToPlayer() {
+        double cellHeight = gridPane.getHeight() / gridPane.getRowCount();
+        double cellWidth = gridPane.getWidth() / gridPane.getColumnCount();
+        double scrollTop = (playerRow * cellHeight) - (scrollPane.getHeight() / 2) + (cellHeight / 2);
+        double scrollLeft = (playerCol * cellWidth) - (scrollPane.getWidth() / 2) + (cellWidth / 2);
+        scrollPane.setVvalue(scrollTop / (gridPane.getHeight() - scrollPane.getHeight()));
+        scrollPane.setHvalue(scrollLeft / (gridPane.getWidth() - scrollPane.getWidth()));
     }
 
     private void updateStats() {
