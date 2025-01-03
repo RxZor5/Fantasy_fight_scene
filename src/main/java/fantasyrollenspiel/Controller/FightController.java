@@ -171,7 +171,7 @@ public class FightController {
         if (bestArmor != null) {
             hero.equipArmor(bestArmor);
             progressBarManager.buyArmor(true, bestArmor); // Aktualisiere die Rüstungswerte und ProgressBars
-            addBattleLogMessage("Beste Rüstung ausgerüstet: " + bestArmor.getName() + " mit Verteidigungswert: " + bestArmor.getDefense());
+            addBattleLogMessage("Beste Rüstung ausgerüstet: " + bestArmor.getName());
         } else {
             hero.setArmor(0);
             progressBarManager.buyArmor(true, null); // Keine Rüstung vorhanden
@@ -413,4 +413,3 @@ public class FightController {
     }
 
 }
-

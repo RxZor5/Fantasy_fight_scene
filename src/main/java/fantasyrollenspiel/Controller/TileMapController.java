@@ -227,7 +227,8 @@ public class TileMapController {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                } else if (playerCol == 20 && (playerRow == 7 || playerRow == 8)) {
+
+            } else if (playerCol == 20 && (playerRow == 7 || playerRow == 8)) {
                     try {
                         Stage stage = (Stage) gridPane.getScene().getWindow();
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fantasyrollenspiel/shop.fxml"));
@@ -284,16 +285,20 @@ public class TileMapController {
         ironLabel.setText("Iron: " + iron);
         playerLevelLabel.setText("Player Level: " + playerLevel);  // Update player level label
         levelProgressBar.setProgress((double) xp / xpThreshold);  // Aktualisiere die Fortschrittsleiste basierend auf XP und XP-Schwelle
+        if(xp >= xpThreshold){
+            levelUp();
+        }
     }
 
     private void levelUp() {
-        if (xp >= xpThreshold) {
-            playerLevel++;
-            xp -= xpThreshold; // Behalte den Überschuss an XP
-            xpThreshold += 50; // Optional: Erhöhe die XP-Schwelle für das nächste Level
-            updateStats();
-        }
+        playerLevel++;
+        xp -= xpThreshold; // Behalte den Überschuss an XP
+        xpThreshold += 50; // Optional: Erhöhe die XP-Schwelle für das nächste Level
+        System.out.println("Player leveled up! New Level: " + playerLevel + ", New XP Threshold: " + xpThreshold);
+        updateStats();
     }
+
+
 
     private void addBattleLogMessage(String message) {
         battleLogTextArea.appendText(message + "\n");
@@ -325,11 +330,14 @@ public class TileMapController {
 
     public void addXP(int amount) {
         xp += amount;
-        if (xp >= xpThreshold) {
+        System.out.println("XP added: " + amount + ", Total XP: " + xp);
+        while (xp >= xpThreshold) {
+            System.out.println("Leveling up! Current XP: " + xp + ", XP Threshold: " + xpThreshold);
             levelUp();
         }
         updateStats();
     }
+
 
     public void setXP(int amount) {
         xp = amount;

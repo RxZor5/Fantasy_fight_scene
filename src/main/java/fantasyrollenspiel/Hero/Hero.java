@@ -8,6 +8,8 @@ public class Hero {
     private int armor;
     private int coins;
     private int iron;
+    private int xp;
+    private int level;
     private Armor equippedArmor;
 
     public Hero(String name, int health, int armor, int coins) {
@@ -16,6 +18,8 @@ public class Hero {
         this.armor = armor;
         this.coins = coins;
         this.iron = 0;
+        this.xp = 0;
+        this.level = 1;
         this.equippedArmor = null; // Keine Rüstung zu Beginn
     }
 
@@ -58,16 +62,32 @@ public class Hero {
         this.coins = coins;
     }
 
-    public void setIron(int iron) {
-        this.iron = iron;
-    }
-
     public int getIron() {
         return iron;
     }
 
+    public void setIron(int iron) {
+        this.iron = iron;
+    }
+
     public void addIron(int amount) {
         this.iron += amount;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public void equipArmor(Armor armor) {

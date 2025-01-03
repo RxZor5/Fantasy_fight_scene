@@ -10,8 +10,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-
 <?import javafx.scene.control.TextArea?>
+
 <AnchorPane minHeight="800.0" minWidth="1000.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fantasyrollenspiel.Controller.FightController">
     <HBox layoutX="10.0" layoutY="11.0" spacing="10" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="11.0">
         <!-- Back button -->
@@ -76,4 +76,8 @@
     <Label fx:id="coinsEarnedLabel" layoutX="10.0" layoutY="454.0" text="Coins Earned: 0" />
     <Label fx:id="ironLabel" layoutX="17.0" layoutY="417.0" text="Iron: 0" />
     <Label fx:id="xpLabel" layoutX="17.0" layoutY="380.0" text="XP: 0" />
+
+    <!-- Player Level and Progress Bar -->
+    <Label fx:id="playerLevelLabel" layoutX="17.0" layoutY="340.0" text="Player Level: 1" />
+    <ProgressBar fx:id="levelProgressBar" layoutX="17.0" layoutY="320.0" prefWidth="200.0" />
 </AnchorPane>
