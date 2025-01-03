@@ -1,11 +1,14 @@
 package fantasyrollenspiel.Hero;
 
+import fantasyrollenspiel.Fight.Armor.Armor;
+
 public class Hero {
     private String name;
     private int health;
     private int armor;
     private int coins;
     private int iron;
+    private Armor equippedArmor;
 
     public Hero(String name, int health, int armor, int coins) {
         this.name = name;
@@ -13,6 +16,7 @@ public class Hero {
         this.armor = armor;
         this.coins = coins;
         this.iron = 0;
+        this.equippedArmor = null; // Keine Rüstung zu Beginn
     }
 
     public String getName() {
@@ -32,7 +36,7 @@ public class Hero {
     }
 
     public int getArmor() {
-        return armor;
+        return (equippedArmor != null) ? equippedArmor.getDefense() : armor;
     }
 
     public void setArmor(int armor) {
@@ -51,6 +55,10 @@ public class Hero {
         this.coins = coins;
     }
 
+    public void setIron(int iron) {
+        this.iron = iron;
+    }
+
     public int getIron() {
         return iron;
     }
@@ -59,6 +67,14 @@ public class Hero {
         this.iron += amount;
     }
 
-    public void takeDamage(int damage) {
+    public void equipArmor(Armor armor) {
+        this.equippedArmor = armor;
+        this.armor = armor.getDefense();
     }
+
+    public Armor getEquippedArmor() {
+        return equippedArmor;
+    }
+
+
 }

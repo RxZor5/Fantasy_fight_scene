@@ -1,11 +1,14 @@
-package fantasyrollenspiel;
+package fantasyrollenspiel.Controller;
 
+import fantasyrollenspiel.Hero.Hero;
+import fantasyrollenspiel.StartGame;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -37,6 +40,9 @@ public class TileMapController {
     @FXML
     private ScrollPane scrollPane;  // Add ScrollPane field
 
+    @FXML
+    private TextArea battleLogTextArea;  // Battle Log TextArea
+
     private ImageView player;
     private int playerRow = 0;
     private int playerCol = 0;
@@ -48,12 +54,26 @@ public class TileMapController {
     private int xp = 0;
     private int playerLevel = 1;
     private int xpThreshold = 100;
+    private static int totalCoins = 0;
+    private static int totalIron = 0;
+
+    private FightController fightController;
 
     public void initialize() {
         animations = new Animations();
         drawTileMap("src/main/resources/Map/tilemap.txt");
         addPlayer();
         setupKeyEvents();
+
+        // Initialize the hero instance
+        Hero hero = new Hero("Spieler", 100, 0, 0);
+        // Initialize controllers and pass hero instance
+        fightController = new FightController();
+        ShopController shopController = new ShopController();
+
+        fightController.setHero(hero);
+        shopController.setHero(hero);
+        shopController.setFightController(fightController);
 
         // Initialize UI elements
         updateStats();
@@ -179,6 +199,7 @@ public class TileMapController {
         }
     }
 
+
     private void addPlayer() {
         player = new ImageView(new Image("file:src/main/resources/fantasyrollenspiel/Bilder/Player.png"));
         player.setFitWidth(64);
@@ -209,9 +230,27 @@ public class TileMapController {
                 } else if (playerCol == 20 && (playerRow == 7 || playerRow == 8)) {
                     try {
                         Stage stage = (Stage) gridPane.getScene().getWindow();
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fantasyrollenspiel/Shop.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fantasyrollenspiel/shop.fxml"));
                         Scene scene = new Scene(loader.load());
                         stage.setScene(scene);
+
+                        ShopController shopController = loader.getController();
+                        totalCoins += coins;
+                        totalIron += iron;
+                        System.out.println("Passing coins to ShopController: " + totalCoins + " und iron: " + totalIron);
+                        shopController.setCoins(totalCoins);
+                        shopController.setIron(totalIron);
+                        shopController.setFightController(fightController); // Setzen des FightControllers hier
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else if (playerCol == 27 && (playerRow == 7 || playerRow == 8)) {
+                    try {
+                        Stage stage = new Stage();
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fantasyrollenspiel/inventory.fxml"));
+                        Scene scene = new Scene(loader.load());
+                        stage.setScene(scene);
+                        stage.show();
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -244,7 +283,24 @@ public class TileMapController {
         coinsLabel.setText("Coins: " + coins);
         ironLabel.setText("Iron: " + iron);
         playerLevelLabel.setText("Player Level: " + playerLevel);  // Update player level label
-        levelProgressBar.setProgress((double) xp / xpThreshold);  // Assume levelProgress is XP for now
+        levelProgressBar.setProgress((double) xp / xpThreshold);  // Aktualisiere die Fortschrittsleiste basierend auf XP und XP-Schwelle
+    }
+
+    private void levelUp() {
+        if (xp >= xpThreshold) {
+            playerLevel++;
+            xp -= xpThreshold; // Behalte den Überschuss an XP
+            xpThreshold += 50; // Optional: Erhöhe die XP-Schwelle für das nächste Level
+            updateStats();
+        }
+    }
+
+    private void addBattleLogMessage(String message) {
+        battleLogTextArea.appendText(message + "\n");
+    }
+
+    public void setFightController(FightController fightController) {
+        this.fightController = fightController;
     }
 
     public void addCoins(int amount) {
@@ -269,6 +325,9 @@ public class TileMapController {
 
     public void addXP(int amount) {
         xp += amount;
+        if (xp >= xpThreshold) {
+            levelUp();
+        }
         updateStats();
     }
 
@@ -277,3 +336,4 @@ public class TileMapController {
         updateStats();
     }
 }
+

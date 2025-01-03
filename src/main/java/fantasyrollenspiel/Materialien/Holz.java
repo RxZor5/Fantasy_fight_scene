@@ -1,9 +1,24 @@
 package fantasyrollenspiel.Materialien;
 
-import fantasyrollenspiel.Armor.Armor;
+public class Holz {
+    private String name;
+    private int amount;
 
-public class Holz extends Armor {
-    public Holz() {
-        super("Holz", 10); // Beispielwert für Holzrüstung
+    public Holz(String name, int amount) {
+        this.name = name;
+        this.amount = amount;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    @Override
+    public String toString() {
+        return name + " - " + amount + " Einheiten";
     }
 }

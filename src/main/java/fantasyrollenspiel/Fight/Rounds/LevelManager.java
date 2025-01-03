@@ -7,7 +7,6 @@ import java.io.*;
 import java.util.Random;
 
 public class LevelManager {
-
     private int currentLevel;
     private Hero hero;
     private ProgressBarManager progressBarManager;
@@ -29,25 +28,29 @@ public class LevelManager {
         }
 
         currentLevel++;
-        saveCurrentLevel(currentLevel); // Speichere das aktuelle Level nach jedem Level-Up
+        saveCurrentLevel(currentLevel);
         resetHeroStats();
         currentMonster = createMonsterForLevel(currentLevel);
         updateProgressBars();
     }
 
     public double getIronChance(int level) {
-        return Math.min(0.05 * level, 1.0);  // Calculate the chance of earning iron, capped at 100%
+        return Math.min(0.05 * level, 1.0);
     }
 
     public int calculateCoins() {
-        return currentLevel * (random.nextInt(5) + 1); // Multipliziere den Coin-Wert mit dem aktuellen Level
+        return currentLevel * (random.nextInt(5) + 1);
     }
 
     public void resetHeroStats() {
-        hero.setHealth(100);  // Reset hero's health
+        hero.setHealth(100);
         progressBarManager.setHeroHealth(100);
-        hero.setArmor(50);  // Reset hero's armor
-        progressBarManager.setHeroArmor(50);
+        if (hero.getEquippedArmor() != null) {
+            hero.setArmor(hero.getEquippedArmor().getDefense());
+        } else {
+            hero.setArmor(0);
+        }
+        progressBarManager.setHeroArmor(hero.getArmor());
     }
 
     public void stayAtCurrentLevel() {
@@ -94,12 +97,11 @@ public class LevelManager {
     }
 
     public void defeatMonster() {
-        int monsterCoins = calculateCoins(); // Verwende die neue Berechnungsmethode für Coins
+        int monsterCoins = calculateCoins();
         hero.addCoins(monsterCoins);
         nextLevel();
     }
 
-    // Speichere das aktuelle Level in einer Datei
     public void saveCurrentLevel(int level) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("currentLevel.txt"))) {
             writer.write(String.valueOf(level));
@@ -108,21 +110,19 @@ public class LevelManager {
         }
     }
 
-    // Lade das aktuelle Level aus der Datei
     private void loadCurrentLevel() {
         try (BufferedReader reader = new BufferedReader(new FileReader("currentLevel.txt"))) {
             String line = reader.readLine();
             if (line != null) {
                 currentLevel = Integer.parseInt(line);
             } else {
-                currentLevel = 1; // Wenn die Datei leer ist, beginne bei Level 1
+                currentLevel = 1;
             }
         } catch (IOException e) {
-            currentLevel = 1; // Wenn die Datei nicht gefunden wird, beginne bei Level 1
+            currentLevel = 1;
         }
     }
 
-    // Setze das Level auf 1 beim Programmende
     public static void resetLevel() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("currentLevel.txt"))) {
             writer.write("1");

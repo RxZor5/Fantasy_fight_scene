@@ -1,9 +1,24 @@
 package fantasyrollenspiel.Materialien;
 
-import fantasyrollenspiel.Armor.Armor;
+public class Eisen {
+    private String name;
+    private int amount;
 
-public class Eisen extends Armor {
-    public Eisen() {
-        super("Eisen", 30); // Beispielwert für Eisenrüstung
+    public Eisen(String name, int amount) {
+        this.name = name;
+        this.amount = amount;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    @Override
+    public String toString() {
+        return name + " - " + amount + " Einheiten";
     }
 }

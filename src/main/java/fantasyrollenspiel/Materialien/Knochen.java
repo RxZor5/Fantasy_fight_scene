@@ -1,9 +1,9 @@
 package fantasyrollenspiel.Materialien;
 
-import fantasyrollenspiel.Armor.Armor;
+import fantasyrollenspiel.Fight.Armor.Armor;
 
 public class Knochen extends Armor {
-    public Knochen() {
-        super("Knochen", 20); // Beispielwert für Knochenrüstung
+    public Knochen(String name, int price, String imagePath, String material, int defense) {
+        super(name, price, imagePath, material, defense);
     }
 }

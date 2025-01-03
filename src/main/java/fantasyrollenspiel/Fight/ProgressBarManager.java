@@ -1,6 +1,6 @@
 package fantasyrollenspiel.Fight;
 
-import fantasyrollenspiel.Armor.Armor;
+import fantasyrollenspiel.Fight.Armor.Armor;
 import javafx.scene.control.ProgressBar;
 
 public class ProgressBarManager {

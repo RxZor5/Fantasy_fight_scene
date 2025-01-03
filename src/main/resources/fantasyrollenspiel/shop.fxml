@@ -3,10 +3,25 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fantasyrollenspiel.ShopController">
+<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fantasyrollenspiel.Controller.ShopController">
     <Label text="Shop" style="-fx-font-size: 24px;" />
+    <Button fx:id="backButton" text="Zurück" layoutX="10.0" layoutY="10.0" onAction="#handleBackButton"/>
+    <HBox spacing="10">
+        <Button text="Tränke" onAction="#showPotions"/>
+        <Button text="Waffen" onAction="#showWeapons"/>
+        <Button text="Rüstung" onAction="#showArmor"/>
+    </HBox>
+    <HBox spacing="10">
+        <Label text="Münzen:" />
+        <Label fx:id="coinsLabel" text="0" />
+        <Label text="Eisen:" />
+        <Label fx:id="ironLabel" text="0" />
+        <Label text="Level:" />
+        <Label fx:id="levelLabel" text="0" />
+    </HBox>
     <ListView fx:id="itemsListView" prefHeight="200" prefWidth="300"/>
-    <Button fx:id="buyButton" text="Buy" onAction="#handleBuy"/>
+    <Button fx:id="buyButton" text="Kaufen" onAction="#handleBuy"/>
 </VBox>
