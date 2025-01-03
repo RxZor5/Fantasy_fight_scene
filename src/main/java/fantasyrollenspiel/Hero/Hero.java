@@ -42,10 +42,9 @@ public class Hero {
     public void setArmor(int armor) {
         this.armor = armor;
         if (this.equippedArmor != null) {
-            this.equippedArmor.setDefense(armor); // Stelle sicher, dass die ausgerüstete Rüstung auch aktualisiert wird
+            this.equippedArmor.setDefense(armor); // Aktualisiere die Rüstungsverteidigung
         }
     }
-
 
     public int getCoins() {
         return coins;
@@ -67,8 +66,6 @@ public class Hero {
         return iron;
     }
 
-
-
     public void addIron(int amount) {
         this.iron += amount;
     }
@@ -78,7 +75,6 @@ public class Hero {
         this.armor = armor.getDefense();
     }
 
-    // Neue Methode setEquippedArmor
     public void setEquippedArmor(Armor armor) {
         this.equippedArmor = armor;
         if (armor != null) {

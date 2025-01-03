@@ -147,17 +147,24 @@ public class FightController {
 
 
     private void updateArmor() {
-        equipBestArmor();  // Beste verfügbare Rüstung ausrüsten
-        addBattleLogMessage("Rüstung wurde aktualisiert. Aktuelle Rüstung: " + hero.getEquippedArmor());
+        // Beste verfügbare Rüstung ausrüsten
+        equipBestArmor();
+        addBattleLogMessage("Rüstung wurde aktualisiert. Aktuelle Rüstung: " + (hero.getEquippedArmor() != null ? hero.getEquippedArmor().getName() : "keine Rüstung"));
 
-        // Aktualisiere die Rüstungswerte in ProgressBarManager
+        // Aktualisiere die Rüstungswerte in ProgressBarManager nur, wenn der Held Rüstung trägt
         if (hero.getEquippedArmor() != null) {
+            hero.getEquippedArmor().resetDefense(); // Verteidigungswert auf den Originalwert zurücksetzen
+            hero.setArmor(hero.getEquippedArmor().getDefense()); // Aktuelle Rüstung verteidigen
             progressBarManager.setHeroArmor(hero.getEquippedArmor().getDefense());
-        } else {
-            progressBarManager.setHeroArmor(0);
         }
-        progressBarManager.setHeroHasArmor(hero.getEquippedArmor() != null);  // Bestätige, dass der Held Rüstung trägt oder nicht
+
+        // Bestätige, dass der Held Rüstung trägt oder nicht
+        progressBarManager.setHeroHasArmor(hero.getEquippedArmor() != null);
     }
+
+
+
+
 
     private void equipBestArmor() {
         Armor bestArmor = Inventory.getBestArmor();
@@ -170,6 +177,9 @@ public class FightController {
             progressBarManager.buyArmor(true, null); // Keine Rüstung vorhanden
         }
     }
+
+
+
 
     private void dodgeAction() {
         if (!decideTurn.isPlayerTurn()) return;
@@ -239,6 +249,25 @@ public class FightController {
         }
     }
 
+    private void resetMonster() {
+        // Neue Werte für das Monster setzen (kann auch zufällig sein)
+        int newHealth = 100; // Beispielwert, kann geändert werden
+        int newArmor = 30; // Beispielwert, kann geändert werden
+
+        // Monster-Health und -Armor zurücksetzen
+        progressBarManager.setEnemyHealth(newHealth);
+        progressBarManager.setEnemyArmor(newArmor);
+
+        // Monster-Name und andere Eigenschaften aktualisieren
+        setNames(hero.getName(), "Neues Monster");
+
+        // Waffenbilder oder andere Darstellungen aktualisieren, falls notwendig
+        updateWeaponImages();
+
+        addBattleLogMessage("Ein neues Monster erscheint!" + "\n");
+    }
+
+
     private void attackAction() {
         if (!decideTurn.isPlayerTurn()) return;
 
@@ -257,6 +286,13 @@ public class FightController {
             updateCoinsEarnedLabel();
             updateIronLabel();
             updateXpLabel();
+
+            // Rüstung des Helden auf vollen Zustand zurücksetzen
+            updateArmor();
+
+            // Monster zurücksetzen
+            resetMonster();
+
             levelManager.nextLevel();
             updateWeaponImages();
             return;
@@ -265,6 +301,8 @@ public class FightController {
         decideTurn.nextTurn();
         monsterAttack();
     }
+
+
 
 
 

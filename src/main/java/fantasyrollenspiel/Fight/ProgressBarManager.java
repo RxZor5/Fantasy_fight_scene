@@ -71,17 +71,18 @@ public class ProgressBarManager {
 
     public void buyArmor(boolean isHero, Armor armor) {
         if (isHero) {
-            if (armor.getDefense() > heroArmor) {
+            if (armor != null && armor.getDefense() > heroArmor) {
                 setHeroArmor(armor.getDefense());
                 setHeroHasArmor(true);
             }
         } else {
-            if (armor.getDefense() > enemyArmor) {
+            if (armor != null && armor.getDefense() > enemyArmor) {
                 setEnemyArmor(armor.getDefense());
                 setEnemyHasArmor(true);
             }
         }
     }
+
 
     public int getHeroHealth() {
         return heroHealth;
