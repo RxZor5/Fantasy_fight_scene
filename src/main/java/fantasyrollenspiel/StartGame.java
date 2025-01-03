@@ -28,7 +28,8 @@ public class StartGame extends Application {
 
         // Initialize the hero instance
         hero = new Hero("Spieler", 100, 0, 0);
-
+        hero.setXp(totalXp);
+        hero.setLevel(1); // Set initial level
         switchScene("/Map/map.fxml");
         primaryStage.show();
     }
@@ -77,10 +78,16 @@ public class StartGame extends Application {
             totalCoins += coinsEarned;
             totalIron += ironEarned;
             totalXp += xpEarned;
+            hero.setXp(totalXp); // Set the updated XP in the hero
             System.out.println("Updated totals - Coins: " + totalCoins + ", Iron: " + totalIron + ", XP: " + totalXp);
             controller.setCoins(totalCoins);
             controller.setIron(totalIron);
             controller.setXP(totalXp);
+
+
+        } else if (fxml.equals("/fantasyrollenspiel/fight.fxml")) {
+            FightController fightController = loader.getController();
+            fightController.setHero(hero); // Hier setzen wir den Helden
         }
 
     }
@@ -88,6 +95,4 @@ public class StartGame extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
-
 }
