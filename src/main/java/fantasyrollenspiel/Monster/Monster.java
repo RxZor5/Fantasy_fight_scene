@@ -77,25 +77,7 @@ public class Monster {
         return weaponDamage;
     }
 
-    /**
-     * Verursacht Schaden am Monster und reduziert dessen Gesundheit oder Rüstung.
-     *
-     * @param damage Der zugefügte Schaden.
-     */
-    public void takeDamage(int damage) {
-        if (armor > 0) {
-            armor = Math.max(armor - damage, 0);
-        } else {
-            health = Math.max(health - damage, 0);
-        }
-    }
 
-    /**
-     * Berechnet den Schaden, den das Monster verursachen kann.
-     *
-     * @return Der Schaden, den das Monster verursachen kann.
-     */
-    private int calculateDamage() {
-        return weaponDamage;
-    }
+
+
 }

@@ -89,44 +89,7 @@ public class ShopController {
         showPotions();
     }
 
-    /**
-     * Setzt den Helden für den Shop-Controller.
-     *
-     * @param hero Der Held.
-     */
-    public void setHero(Hero hero) {
-        this.hero = hero;
-        updateStats(); // Aktualisieren der Anzeige nach dem Setzen des Helden
-    }
 
-    /**
-     * Setzt den Fight-Controller für den Shop-Controller.
-     *
-     * @param fightController Der Fight-Controller.
-     */
-    public void setFightController(FightController fightController) {
-        this.fightController = fightController;
-    }
-
-    /**
-     * Setzt die Anzahl der Münzen und aktualisiert die Anzeige.
-     *
-     * @param amount Die Anzahl der Münzen.
-     */
-    public void setCoins(int amount) {
-        hero.setCoins(amount); // Setzen des Münzwerts im Heldenobjekt
-        coinsLabel.setText("Coins: " + amount);
-    }
-
-    /**
-     * Setzt die Menge an Eisen und aktualisiert die Anzeige.
-     *
-     * @param amount Die Menge an Eisen.
-     */
-    public void setIron(int amount) {
-        hero.setIron(amount); // Setzen des Eisenwerts im Heldenobjekt
-        ironLabel.setText("Iron: " + amount);
-    }
 
     /**
      * Zeigt die verfügbaren Tränke im Shop an.
@@ -267,5 +230,44 @@ public class ShopController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Setzt den Helden für den Shop-Controller.
+     *
+     * @param hero Der Held.
+     */
+    public void setHero(Hero hero) {
+        this.hero = hero;
+        updateStats(); // Aktualisieren der Anzeige nach dem Setzen des Helden
+    }
+
+    /**
+     * Setzt den Fight-Controller für den Shop-Controller.
+     *
+     * @param fightController Der Fight-Controller.
+     */
+    public void setFightController(FightController fightController) {
+        this.fightController = fightController;
+    }
+
+    /**
+     * Setzt die Anzahl der Münzen und aktualisiert die Anzeige.
+     *
+     * @param amount Die Anzahl der Münzen.
+     */
+    public void setCoins(int amount) {
+        hero.setCoins(amount); // Setzen des Münzwerts im Heldenobjekt
+        coinsLabel.setText("Coins: " + amount);
+    }
+
+    /**
+     * Setzt die Menge an Eisen und aktualisiert die Anzeige.
+     *
+     * @param amount Die Menge an Eisen.
+     */
+    public void setIron(int amount) {
+        hero.setIron(amount); // Setzen des Eisenwerts im Heldenobjekt
+        ironLabel.setText("Iron: " + amount);
     }
 }

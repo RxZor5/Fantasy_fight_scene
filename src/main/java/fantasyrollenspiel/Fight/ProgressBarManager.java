@@ -72,29 +72,6 @@ public class ProgressBarManager {
     }
 
 
-
-    /**
-     * Setzt, ob der Held eine Rüstung hat.
-     *
-     * @param heroHasArmor true, wenn der Held eine Rüstung hat, sonst false.
-     */
-    public void setHeroHasArmor(boolean heroHasArmor) {
-        this.heroHasArmor = heroHasArmor;
-        if (!heroHasArmor) {
-            this.heroArmor = 0;
-        }
-        updateArmorBar(heroArmorBar, heroArmor);
-    }
-
-    /**
-     * Überprüft, ob der Gegner eine Rüstung hat.
-     *
-     * @return true, wenn der Gegner eine Rüstung hat, sonst false.
-     */
-    public boolean isEnemyHasArmor() {
-        return enemyHasArmor;
-    }
-
     /**
      * Setzt, ob der Gegner eine Rüstung hat.
      *
@@ -128,73 +105,7 @@ public class ProgressBarManager {
         }
     }
 
-    /**
-     * Gibt die aktuelle Gesundheit des Helden zurück.
-     *
-     * @return Die aktuelle Gesundheit des Helden.
-     */
-    public int getHeroHealth() {
-        return heroHealth;
-    }
 
-    /**
-     * Setzt die Gesundheit des Helden und aktualisiert die Gesundheitsleiste.
-     *
-     * @param heroHealth Die neue Gesundheit des Helden.
-     */
-    public void setHeroHealth(int heroHealth) {
-        this.heroHealth = heroHealth;
-        updateHealthBar(heroHealthBar, heroHealth);
-    }
-
-    /**
-     * Gibt die aktuelle Gesundheit des Gegners zurück.
-     *
-     * @return Die aktuelle Gesundheit des Gegners.
-     */
-    public int getEnemyHealth() {
-        return enemyHealth;
-    }
-
-    /**
-     * Setzt die Gesundheit des Gegners und aktualisiert die Gesundheitsleiste.
-     *
-     * @param enemyHealth Die neue Gesundheit des Gegners.
-     */
-    public void setEnemyHealth(int enemyHealth) {
-        this.enemyHealth = enemyHealth;
-        updateHealthBar(monsterHealthBar, enemyHealth);
-    }
-
-    /**
-     * Gibt die aktuelle Rüstung des Helden zurück.
-     *
-     * @return Die aktuelle Rüstung des Helden.
-     */
-    public int getHeroArmor() {
-        return heroArmor;
-    }
-
-    /**
-     * Setzt die Rüstung des Helden und aktualisiert die Rüstungsleiste.
-     *
-     * @param heroArmor Die neue Rüstung des Helden.
-     */
-    public void setHeroArmor(int heroArmor) {
-        this.heroArmor = heroArmor;
-        updateArmorBar(heroArmorBar, heroArmor);
-    }
-
-
-    /**
-     * Setzt die Rüstung des Gegners und aktualisiert die Rüstungsleiste.
-     *
-     * @param enemyArmor Die neue Rüstung des Gegners.
-     */
-    public void setEnemyArmor(int enemyArmor) {
-        this.enemyArmor = enemyArmor;
-        updateArmorBar(monsterArmorBar, enemyArmor);
-    }
 
     /**
      * Verursacht Schaden am Helden und aktualisiert die Gesundheits- und Rüstungsleisten.
@@ -265,5 +176,86 @@ public class ProgressBarManager {
             enemyHealth = Math.max(enemyHealth - damage, 0);
             updateHealthBar(monsterHealthBar, enemyHealth);
         }
+    }
+
+    /**
+     * Setzt, ob der Held eine Rüstung hat.
+     *
+     * @param heroHasArmor true, wenn der Held eine Rüstung hat, sonst false.
+     */
+    public void setHeroHasArmor(boolean heroHasArmor) {
+        this.heroHasArmor = heroHasArmor;
+        if (!heroHasArmor) {
+            this.heroArmor = 0;
+        }
+        updateArmorBar(heroArmorBar, heroArmor);
+    }
+
+    /**
+     * Gibt die aktuelle Gesundheit des Helden zurück.
+     *
+     * @return Die aktuelle Gesundheit des Helden.
+     */
+    public int getHeroHealth() {
+        return heroHealth;
+    }
+
+    /**
+     * Setzt die Gesundheit des Helden und aktualisiert die Gesundheitsleiste.
+     *
+     * @param heroHealth Die neue Gesundheit des Helden.
+     */
+    public void setHeroHealth(int heroHealth) {
+        this.heroHealth = heroHealth;
+        updateHealthBar(heroHealthBar, heroHealth);
+    }
+
+    /**
+     * Gibt die aktuelle Gesundheit des Gegners zurück.
+     *
+     * @return Die aktuelle Gesundheit des Gegners.
+     */
+    public int getEnemyHealth() {
+        return enemyHealth;
+    }
+
+    /**
+     * Setzt die Gesundheit des Gegners und aktualisiert die Gesundheitsleiste.
+     *
+     * @param enemyHealth Die neue Gesundheit des Gegners.
+     */
+    public void setEnemyHealth(int enemyHealth) {
+        this.enemyHealth = enemyHealth;
+        updateHealthBar(monsterHealthBar, enemyHealth);
+    }
+
+    /**
+     * Gibt die aktuelle Rüstung des Helden zurück.
+     *
+     * @return Die aktuelle Rüstung des Helden.
+     */
+    public int getHeroArmor() {
+        return heroArmor;
+    }
+
+    /**
+     * Setzt die Rüstung des Helden und aktualisiert die Rüstungsleiste.
+     *
+     * @param heroArmor Die neue Rüstung des Helden.
+     */
+    public void setHeroArmor(int heroArmor) {
+        this.heroArmor = heroArmor;
+        updateArmorBar(heroArmorBar, heroArmor);
+    }
+
+
+    /**
+     * Setzt die Rüstung des Gegners und aktualisiert die Rüstungsleiste.
+     *
+     * @param enemyArmor Die neue Rüstung des Gegners.
+     */
+    public void setEnemyArmor(int enemyArmor) {
+        this.enemyArmor = enemyArmor;
+        updateArmorBar(monsterArmorBar, enemyArmor);
     }
 }

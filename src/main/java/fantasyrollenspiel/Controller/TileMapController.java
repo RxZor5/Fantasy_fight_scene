@@ -55,10 +55,8 @@ public class TileMapController {
     private int coins = 0;
     private int iron = 0;
     private int xp = 0;
-    private int playerLevel = 1;
     private int xpThreshold = 100;
-    private static int totalCoins = 0;
-    private static int totalIron = 0;
+
 
     private FightController fightController;
 
@@ -309,28 +307,9 @@ public class TileMapController {
         }
     }
 
-    /**
-     * Setzt den Helden für den TileMapController.
-     *
-     * @param hero Der Held.
-     */
-    public void setHero(Hero hero) {
-        this.hero = hero;
-        updateStats(); // Aktualisieren der Anzeige nach dem Setzen des Helden
-    }
 
-    /**
-     * Aktualisiert die Statistiken nach dem Kampf.
-     */
-    public void updateStatsAfterFight() {
-        // Hole die Gesamtwerte nach dem Kampf
-        int totalCoinsAfterFight = fightController.getTotalCoins();
-        int totalIronAfterFight = fightController.getTotalIron();
 
-        // Setze die Gesamtwerte im TileMapController
-        setCoins(totalCoinsAfterFight);
-        setIron(totalIronAfterFight);
-    }
+
 
     /**
      * Scrollt zum Spieler auf der Karte.
@@ -367,35 +346,7 @@ public class TileMapController {
         }
     }
 
-    /**
-     * Setzt die Anzahl der Münzen und aktualisiert die Anzeige.
-     *
-     * @param amount Die Anzahl der Münzen.
-     */
-    public void setCoins(int amount) {
-        hero.setCoins(amount);
-        coinsLabel.setText("Coins: " + amount);
-    }
 
-    /**
-     * Setzt die Menge an Eisen und aktualisiert die Anzeige.
-     *
-     * @param amount Die Menge an Eisen.
-     */
-    public void setIron(int amount) {
-        hero.setIron(amount);
-        ironLabel.setText("Iron: " + amount);
-    }
-
-    /**
-     * Setzt die Erfahrungspunkte und aktualisiert die Statistiken.
-     *
-     * @param amount Die Anzahl der Erfahrungspunkte.
-     */
-    public void setXP(int amount) {
-        hero.setXp(amount);
-        updateStats();
-    }
 
     /**
      * Fügt die angegebene Anzahl Münzen hinzu und aktualisiert die Anzeige.
@@ -444,4 +395,44 @@ public class TileMapController {
         ironLabel.setText("Iron: " + iron);
     }
 
+
+    /**
+     * Setzt die Anzahl der Münzen und aktualisiert die Anzeige.
+     *
+     * @param amount Die Anzahl der Münzen.
+     */
+    public void setCoins(int amount) {
+        hero.setCoins(amount);
+        coinsLabel.setText("Coins: " + amount);
+    }
+
+    /**
+     * Setzt die Menge an Eisen und aktualisiert die Anzeige.
+     *
+     * @param amount Die Menge an Eisen.
+     */
+    public void setIron(int amount) {
+        hero.setIron(amount);
+        ironLabel.setText("Iron: " + amount);
+    }
+
+    /**
+     * Setzt die Erfahrungspunkte und aktualisiert die Statistiken.
+     *
+     * @param amount Die Anzahl der Erfahrungspunkte.
+     */
+    public void setXP(int amount) {
+        hero.setXp(amount);
+        updateStats();
+    }
+
+    /**
+     * Setzt den Helden für den TileMapController.
+     *
+     * @param hero Der Held.
+     */
+    public void setHero(Hero hero) {
+        this.hero = hero;
+        updateStats(); // Aktualisieren der Anzeige nach dem Setzen des Helden
+    }
 }

@@ -98,24 +98,6 @@ public class FightController {
         }));
     }
 
-    /**
-     * Setzt das Hero-Objekt für den Controller.
-     *
-     * @param hero Das zu setzende Hero-Objekt.
-     */
-    public void setHero(Hero hero) {
-        this.hero = hero;
-        updateHeroStats();
-    }
-
-    /**
-     * Setzt den Rüstungswert für den Helden.
-     *
-     * @param armor Der zu setzende Rüstungswert.
-     */
-    public void setHeroArmor(int armor) {
-        hero.setArmor(armor);
-    }
 
     /**
      * Aktualisiert die Rüstung des Helden auf die beste verfügbare Rüstung.
@@ -180,16 +162,7 @@ public class FightController {
         battleLogTextArea.appendText(message + "\n");
     }
 
-    /**
-     * Setzt die Namen für den Helden und das Monster.
-     *
-     * @param heroName    Der Name des Helden.
-     * @param monsterName Der Name des Monsters.
-     */
-    public void setNames(String heroName, String monsterName) {
-        lHeroName.setText(heroName);
-        lMonsterName.setText(monsterName);
-    }
+
 
     /**
      * Aktualisiert die Waffenbilder für das Monster.
@@ -338,21 +311,7 @@ public class FightController {
         alert.showAndWait();
     }
 
-    public void setSessionCoins(int sessionCoins) {
-        this.sessionCoins = sessionCoins;
-    }
 
-    public void setSessionIron(int sessionIron) {
-        this.sessionIron = sessionIron;
-    }
-
-    public int getTotalCoins() {
-        return totalCoins;
-    }
-
-    public int getTotalIron() {
-        return totalIron;
-    }
 
     /**
      * Behandelt die Aktion des Zurück-Buttons.
@@ -380,6 +339,47 @@ public class FightController {
         totalIron += sessionIron;
         sessionCoins = 0;
         sessionIron = 0;
+    }
+
+    public void setSessionCoins(int sessionCoins) {
+        this.sessionCoins = sessionCoins;
+    }
+
+    public void setSessionIron(int sessionIron) {
+        this.sessionIron = sessionIron;
+    }
+
+
+
+    /**
+     * Setzt die Namen für den Helden und das Monster.
+     *
+     * @param heroName    Der Name des Helden.
+     * @param monsterName Der Name des Monsters.
+     */
+    public void setNames(String heroName, String monsterName) {
+        lHeroName.setText(heroName);
+        lMonsterName.setText(monsterName);
+    }
+
+
+    /**
+     * Setzt das Hero-Objekt für den Controller.
+     *
+     * @param hero Das zu setzende Hero-Objekt.
+     */
+    public void setHero(Hero hero) {
+        this.hero = hero;
+        updateHeroStats();
+    }
+
+    /**
+     * Setzt den Rüstungswert für den Helden.
+     *
+     * @param armor Der zu setzende Rüstungswert.
+     */
+    public void setHeroArmor(int armor) {
+        hero.setArmor(armor);
     }
 }
 
