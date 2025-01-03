@@ -26,7 +26,7 @@
     <HBox spacing="10" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
         <!-- GridPane für 2x2 Buttons -->
         <GridPane fx:id="gridPane" hgap="10" vgap="10">
-            <Button text="Ultra-Attack" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <Button fx:id="updateArmorButton" text="update armor" GridPane.columnIndex="0" GridPane.rowIndex="1" />
             <!-- Hier wird der Inventar-Button platziert -->
             <ImageView fx:id="ivAttack" fitHeight="31.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                 <image>

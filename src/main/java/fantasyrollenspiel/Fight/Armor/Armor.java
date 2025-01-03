@@ -20,6 +20,10 @@ public class Armor extends ShopItem {
         return defense;
     }
 
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
+
     @Override
     public String toString() {
         return getName() + " - " + getPrice() + " Gold (Material: " + material + ", Verteidigung: " + defense + ")";

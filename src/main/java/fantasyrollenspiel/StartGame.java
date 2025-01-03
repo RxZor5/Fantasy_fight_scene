@@ -82,9 +82,12 @@ public class StartGame extends Application {
             controller.setIron(totalIron);
             controller.setXP(totalXp);
         }
+
     }
 
     public static void main(String[] args) {
         launch(args);
     }
+
+
 }

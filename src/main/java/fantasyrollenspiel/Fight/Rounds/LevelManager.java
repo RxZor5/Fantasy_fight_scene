@@ -130,4 +130,22 @@ public class LevelManager {
             e.printStackTrace();
         }
     }
+
+    public void dealDamageToHeroArmor(int damage) {
+        if (hero.getArmor() > 0) {
+            int remainingDamage = damage - hero.getArmor();
+            hero.setArmor(Math.max(0, hero.getArmor() - damage)); // Update the hero's armor
+
+            // Falls noch Schaden übrig ist, wird dieser der Gesundheit zugefügt
+            if (remainingDamage > 0) {
+                progressBarManager.dealDamageToHero(remainingDamage);
+            }
+
+            // Aktualisiere die Armor-ProgressBar
+            progressBarManager.setHeroArmor(hero.getArmor());
+        } else {
+            // Wenn keine Rüstung mehr vorhanden ist, füge den gesamten Schaden der Gesundheit zu
+            progressBarManager.dealDamageToHero(damage);
+        }
+    }
 }

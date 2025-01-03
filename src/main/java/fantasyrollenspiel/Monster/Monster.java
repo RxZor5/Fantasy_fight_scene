@@ -48,11 +48,7 @@ public class Monster {
         }
     }
 
-    public void attack(Hero hero) {
-        int damage = calculateDamage();
-        hero.takeDamage(damage);
-        System.out.println(name + " greift an und verursacht " + damage + " Schaden!");
-    }
+
 
     private int calculateDamage() {
         return weaponDamage;

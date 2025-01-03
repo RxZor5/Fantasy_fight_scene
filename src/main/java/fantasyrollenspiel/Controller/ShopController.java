@@ -3,6 +3,7 @@ package fantasyrollenspiel.Controller;
 import fantasyrollenspiel.Fight.Armor.Armor;
 import fantasyrollenspiel.Fight.Potions.HealthPotion;
 import fantasyrollenspiel.Fight.Potions.StrengthPotion;
+import fantasyrollenspiel.Fight.ProgressBarManager;
 import fantasyrollenspiel.Fight.Waffen.BoneBow;
 import fantasyrollenspiel.Fight.Waffen.BoneSword;
 import fantasyrollenspiel.Fight.Waffen.WoodBow;
@@ -47,6 +48,7 @@ public class ShopController {
     private int currentLevel = 0;
     private FightController fightController;
     private Hero hero;
+    private ProgressBarManager progressBarManager;
 
     public void initialize() {
         System.out.println("ShopController initialisiert");
@@ -130,25 +132,17 @@ public class ShopController {
                 itemIronCost = ((Armor) selectedItem).getDefense();
             }
 
-            System.out.println("Überprüfung der Ressourcen...");
-            System.out.println("Benötigte Coins: " + itemPrice + ", Benötigtes Eisen: " + itemIronCost);
-            System.out.println("Hero Coins: " + hero.getCoins());
-            System.out.println("Hero Iron: " + hero.getIron());
-
             if (totalCoins >= itemPrice && totalIron >= itemIronCost) {
-                System.out.println("Hero hat genug Ressourcen.");
                 Inventory.addItem(selectedItem);
                 hero.addCoins(-itemPrice);
                 hero.addIron(-itemIronCost);
+
                 if (selectedItem instanceof Armor) {
                     equipBestArmor();
                 }
             } else {
-                System.out.println("Nicht genügend Ressourcen.");
                 showAlert("Nicht genügend Ressourcen", "Du hast nicht genügend Coins oder Eisen, um diesen Gegenstand zu kaufen.");
             }
-
-
         }
     }
 
@@ -156,14 +150,19 @@ public class ShopController {
         Armor bestArmor = Inventory.getBestArmor();
         if (bestArmor != null) {
             hero.equipArmor(bestArmor);
-            fightController.setHeroArmor(bestArmor.getDefense());
-            System.out.println("Beste Rüstung ausgerüstet: " + bestArmor.getName() + " mit Verteidigungswert: " + bestArmor.getDefense());
+            if (fightController != null) {
+                fightController.setHeroArmor(bestArmor.getDefense());
+                fightController.updateHeroStats();
+            }
         } else {
             hero.setArmor(0);
-            fightController.setHeroArmor(0);
-            System.out.println("Keine Rüstung ausgerüstet, Rüstungswert auf 0 gesetzt.");
+            if (fightController != null) {
+                fightController.setHeroArmor(0);
+                fightController.updateHeroStats();
+            }
         }
     }
+
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(AlertType.WARNING);

@@ -1,11 +1,14 @@
 package fantasyrollenspiel.Controller;
 
 import fantasyrollenspiel.Animations.Animations;
+import fantasyrollenspiel.Fight.Armor.Armor;
 import fantasyrollenspiel.Fight.DecideTurn;
 import fantasyrollenspiel.Fight.ProgressBarManager;
 import fantasyrollenspiel.Fight.Rounds.LevelManager;
 import fantasyrollenspiel.Hero.Hero;
+import fantasyrollenspiel.Inventory;
 import fantasyrollenspiel.StartGame;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -77,6 +80,9 @@ public class FightController {
     @FXML
     private TextArea battleLogTextArea;
 
+    @FXML
+    private Button updateArmorButton;
+
 
 
     private Animations animations;
@@ -117,6 +123,9 @@ public class FightController {
         ivAttack.setOnMouseClicked(event -> attackAction());
         ivHeal.setOnMouseClicked(event -> healAction());
 
+        // Füge den OnClick Event-Handler für den neuen Button hinzu
+        updateArmorButton.setOnMouseClicked(event -> updateArmor());
+
         addInventoryButton(new Button("Inventar"));
         progressBarManager = new ProgressBarManager(heroHealthBar, monsterHealthBar, heroArmorBar, monsterArmorBar);
         levelManager = new LevelManager(hero, progressBarManager);
@@ -127,15 +136,72 @@ public class FightController {
         updateIronLabel();
         updateXpLabel();  // Update XP Label
         startGame();
+
+        Platform.runLater(() -> {
+            battleLogTextArea.getScene().setOnKeyPressed(event -> {
+                if (event.getCode().toString().equals("G")) {
+                    dodgeAction(); }
+            });
+        });
     }
 
+
+    private void updateArmor() {
+        equipBestArmor();  // Beste verfügbare Rüstung ausrüsten
+        addBattleLogMessage("Rüstung wurde aktualisiert. Aktuelle Rüstung: " + hero.getEquippedArmor());
+
+        // Aktualisiere die Rüstungswerte in ProgressBarManager
+        if (hero.getEquippedArmor() != null) {
+            progressBarManager.setHeroArmor(hero.getEquippedArmor().getDefense());
+        } else {
+            progressBarManager.setHeroArmor(0);
+        }
+        progressBarManager.setHeroHasArmor(hero.getEquippedArmor() != null);  // Bestätige, dass der Held Rüstung trägt oder nicht
+    }
+
+    private void equipBestArmor() {
+        Armor bestArmor = Inventory.getBestArmor();
+        if (bestArmor != null) {
+            hero.equipArmor(bestArmor);
+            progressBarManager.buyArmor(true, bestArmor); // Aktualisiere die Rüstungswerte und ProgressBars
+            addBattleLogMessage("Beste Rüstung ausgerüstet: " + bestArmor.getName() + " mit Verteidigungswert: " + bestArmor.getDefense());
+        } else {
+            hero.setArmor(0);
+            progressBarManager.buyArmor(true, null); // Keine Rüstung vorhanden
+        }
+    }
+
+    private void dodgeAction() {
+        if (!decideTurn.isPlayerTurn()) return;
+
+        double dodgeChance = 0.1; // 10% Wahrscheinlichkeit zum Ausweichen
+        if (random.nextDouble() < dodgeChance) {
+            addBattleLogMessage("Du bist dem Angriff ausgewichen!");
+            // Spieler ist sofort wieder dran
+            decideTurn.nextTurn(); // Überspringe Monsterzug
+            decideTurn.nextTurn();
+        } else {
+            addBattleLogMessage("Ausweichversuch fehlgeschlagen.");
+            decideTurn.nextTurn();
+            monsterAttack(); // Monster greift an, wenn Ausweichen fehlschlägt
+        }
+    }
+
+
+
+
+
+
     public void setTileMapController(TileMapController tileMapController) {
+        this.tileMapController = tileMapController;
         tileMapController.setFightController(this);
     }
 
     private void addBattleLogMessage(String message) {
         battleLogTextArea.appendText(message + "\n");
     }
+
+
 
     public void setNames(String heroName, String monsterName) {
         lHeroName.setText(heroName);
@@ -200,6 +266,9 @@ public class FightController {
         monsterAttack();
     }
 
+
+
+
     private void healAction() {
         if (!decideTurn.isPlayerTurn()) return;
 
@@ -213,24 +282,36 @@ public class FightController {
     public void setHeroArmor(int armor) {
         if (this.hero != null) {
             this.hero.setArmor(armor);
+            updateHeroStats();
         }
     }
 
 
     private void monsterAttack() {
         int damage = random.nextInt(11) + 10;
-        progressBarManager.dealDamageToHero(damage);
+        System.out.println("Monster greift an mit Schaden: " + damage);
+
+        if (hero.getArmor() > 0) {
+            progressBarManager.dealDamageToHeroArmor(damage, hero);
+        } else {
+            progressBarManager.dealDamageToHero(damage);
+        }
+
         addBattleLogMessage("Das Monster hat dich angegriffen! Schaden: " + damage + ". Deine Rüstung: " + progressBarManager.getHeroArmor() + ". Deine Gesundheit: " + progressBarManager.getHeroHealth() + "\n");
 
-        int level = levelManager.getCurrentLevel();
+        System.out.println("Helden-Gesundheit: " + progressBarManager.getHeroHealth());
+        System.out.println("Helden-Rüstung: " + progressBarManager.getHeroArmor());
+
         if (progressBarManager.getHeroHealth() == 0) {
-            addBattleLogMessage("Du wurdest besiegt und hast Level " + level + "erreicht" + "\n");
+            addBattleLogMessage("Du wurdest besiegt und hast Level " + levelManager.getCurrentLevel() + " erreicht\n");
             levelManager.resetLevel();
             return;
         }
 
         decideTurn.nextTurn();
     }
+
+
 
     private void showAlert(String title, String message) {
         javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
@@ -263,8 +344,19 @@ public class FightController {
         }
     }
 
-    public void setHero(Hero hero){
+    public void setHero(Hero hero) {
         this.hero = hero;
+        updateHeroStats();
+    }
+
+
+
+
+    public void updateHeroStats() {
+        if (hero != null && heroHealthBar != null && heroArmorBar != null) {
+            heroHealthBar.setProgress((double) hero.getHealth() / 100);
+            heroArmorBar.setProgress((double) hero.getArmor() / 100);
+        }
     }
 
 
@@ -273,13 +365,14 @@ public class FightController {
         if (tileMapController != null) {
             tileMapController.addCoins(hero.getCoins());
             tileMapController.addIron(hero.getIron());
-            tileMapController.addXP(xpEarned);  // Pass the XP to the map controller
+            tileMapController.addXP(xpEarned);
         }
         try {
-            StartGame.switchScene("/Map/map.fxml", hero.getCoins(), hero.getIron(), xpEarned);  // Pass the XP when switching scene
+            StartGame.switchScene("/Map/map.fxml", hero.getCoins(), hero.getIron(), xpEarned);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 }
+
