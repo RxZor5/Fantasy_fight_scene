@@ -16,7 +16,7 @@
     </HBox>
     <HBox spacing="10">
         <Label text="Münzen:" />
-        <Label fx:id="coinsLabel" text="0" />
+        <Label fx:id="coinsLabel" text = "0" />
         <Label text="Eisen:" />
         <Label fx:id="ironLabel" text="0" />
         <Label text="Level:" />

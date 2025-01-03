@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.control.TextArea?>
 
@@ -49,6 +50,9 @@
         </GridPane>
     </HBox>
 
+    <!-- Additional Pane for buttons -->
+    <Pane fx:id="buttonPane" layoutX="20.0" layoutY="700.0" />
+
     <!-- Image vom Helden -->
     <ImageView fx:id="heroImage" fitHeight="200.0" fitWidth="150.0" layoutX="14.0" layoutY="585.0" />
     <ImageView fx:id="heroWeaponImage" fitHeight="200.0" fitWidth="200.0" layoutX="250.0" layoutY="523.0" />
@@ -77,7 +81,4 @@
     <Label fx:id="ironLabel" layoutX="17.0" layoutY="417.0" text="Iron: 0" />
     <Label fx:id="xpLabel" layoutX="17.0" layoutY="380.0" text="XP: 0" />
 
-    <!-- Player Level and Progress Bar -->
-    <Label fx:id="playerLevelLabel" layoutX="17.0" layoutY="340.0" text="Player Level: 1" />
-    <ProgressBar fx:id="levelProgressBar" layoutX="17.0" layoutY="320.0" prefWidth="200.0" />
 </AnchorPane>

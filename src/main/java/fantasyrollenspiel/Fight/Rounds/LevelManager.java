@@ -6,6 +6,9 @@ import fantasyrollenspiel.Fight.ProgressBarManager;
 import java.io.*;
 import java.util.Random;
 
+/**
+ * Der Level-Manager verwaltet den Fortschritt und die Level im Spiel.
+ */
 public class LevelManager {
     private int currentLevel;
     private Hero hero;
@@ -13,6 +16,12 @@ public class LevelManager {
     private Monster currentMonster;
     private Random random;
 
+    /**
+     * Konstruktor zum Erstellen eines Level-Managers.
+     *
+     * @param hero Der Held im Spiel.
+     * @param progressBarManager Der Manager für die Fortschrittsbalken.
+     */
     public LevelManager(Hero hero, ProgressBarManager progressBarManager) {
         this.hero = hero;
         this.progressBarManager = progressBarManager;
@@ -22,6 +31,9 @@ public class LevelManager {
         updateProgressBars();
     }
 
+    /**
+     * Wechselt zum nächsten Level.
+     */
     public void nextLevel() {
         if (random.nextDouble() <= getIronChance(currentLevel)) {
             hero.addIron(1);
@@ -34,14 +46,28 @@ public class LevelManager {
         updateProgressBars();
     }
 
+    /**
+     * Berechnet die Wahrscheinlichkeit, Eisen zu finden.
+     *
+     * @param level Das aktuelle Level.
+     * @return Die Wahrscheinlichkeit, Eisen zu finden.
+     */
     public double getIronChance(int level) {
         return Math.min(0.05 * level, 1.0);
     }
 
+    /**
+     * Berechnet die Menge an Münzen, die im aktuellen Level verdient werden können.
+     *
+     * @return Die Menge an verdienten Münzen.
+     */
     public int calculateCoins() {
         return currentLevel * (random.nextInt(5) + 1);
     }
 
+    /**
+     * Setzt die Statistiken des Helden zurück.
+     */
     public void resetHeroStats() {
         hero.setHealth(100);
         progressBarManager.setHeroHealth(100);
@@ -53,10 +79,19 @@ public class LevelManager {
         progressBarManager.setHeroArmor(hero.getArmor());
     }
 
+    /**
+     * Verbleibt im aktuellen Level.
+     */
     public void stayAtCurrentLevel() {
-        System.out.println("You've stayed at the current level.");
+        System.out.println("Du bist im aktuellen Level geblieben.");
     }
 
+    /**
+     * Erstellt ein Monster für das aktuelle Level.
+     *
+     * @param level Das aktuelle Level.
+     * @return Das erstellte Monster.
+     */
     private Monster createMonsterForLevel(int level) {
         int health = Math.min(30 + level * 10, 100);
         int armor = level > 7 ? Math.min(20 + (level - 7) * 10, 100) : 0;
@@ -65,6 +100,12 @@ public class LevelManager {
         return new Monster("Monster Level " + level, health, armor, weaponImage, damage);
     }
 
+    /**
+     * Gibt das Waffenbild für das aktuelle Level zurück.
+     *
+     * @param level Das aktuelle Level.
+     * @return Der Pfad zum Waffenbild.
+     */
     private String getWeaponImageForLevel(int level) {
         if (level <= 3) return "/Bilder/Waffen/hands.png";
         else if (level <= 6) return "/Bilder/Waffen/bonebow.png";
@@ -74,6 +115,12 @@ public class LevelManager {
         else return "/Bilder/Waffen/ironsword.png";
     }
 
+    /**
+     * Gibt den Waffenschaden für das aktuelle Level zurück.
+     *
+     * @param level Das aktuelle Level.
+     * @return Der Waffenschaden.
+     */
     private int getWeaponDamageForLevel(int level) {
         if (level <= 3) return 5 + level * 2;
         else if (level <= 6) return 10 + (level - 3) * 3;
@@ -83,25 +130,46 @@ public class LevelManager {
         else return 30 + (level - 15) * 2;
     }
 
+    /**
+     * Aktualisiert die Fortschrittsbalken für Monster und Held.
+     */
     private void updateProgressBars() {
         progressBarManager.setEnemyHealth(currentMonster.getHealth());
         progressBarManager.setEnemyArmor(currentMonster.getArmor());
     }
 
+    /**
+     * Gibt das aktuelle Level zurück.
+     *
+     * @return Das aktuelle Level.
+     */
     public int getCurrentLevel() {
         return currentLevel;
     }
 
+    /**
+     * Gibt das aktuelle Monster zurück.
+     *
+     * @return Das aktuelle Monster.
+     */
     public Monster getCurrentMonster() {
         return currentMonster;
     }
 
+    /**
+     * Besiegt das aktuelle Monster und wechselt zum nächsten Level.
+     */
     public void defeatMonster() {
         int monsterCoins = calculateCoins();
         hero.addCoins(monsterCoins);
         nextLevel();
     }
 
+    /**
+     * Speichert das aktuelle Level in eine Datei.
+     *
+     * @param level Das aktuelle Level.
+     */
     public void saveCurrentLevel(int level) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("currentLevel.txt"))) {
             writer.write(String.valueOf(level));
@@ -110,6 +178,9 @@ public class LevelManager {
         }
     }
 
+    /**
+     * Lädt das aktuelle Level aus einer Datei.
+     */
     private void loadCurrentLevel() {
         try (BufferedReader reader = new BufferedReader(new FileReader("currentLevel.txt"))) {
             String line = reader.readLine();
@@ -123,6 +194,9 @@ public class LevelManager {
         }
     }
 
+    /**
+     * Setzt das Level auf 1 zurück.
+     */
     public static void resetLevel() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("currentLevel.txt"))) {
             writer.write("1");
@@ -131,17 +205,22 @@ public class LevelManager {
         }
     }
 
+    /**
+     * Verursacht Schaden an der Rüstung des Helden.
+     *
+     * @param damage Der zugefügte Schaden.
+     */
     public void dealDamageToHeroArmor(int damage) {
         if (hero.getArmor() > 0) {
             int remainingDamage = damage - hero.getArmor();
-            hero.setArmor(Math.max(0, hero.getArmor() - damage)); // Update the hero's armor
+            hero.setArmor(Math.max(0, hero.getArmor() - damage)); // Aktualisiert die Rüstung des Helden
 
             // Falls noch Schaden übrig ist, wird dieser der Gesundheit zugefügt
             if (remainingDamage > 0) {
                 progressBarManager.dealDamageToHero(remainingDamage);
             }
 
-            // Aktualisiere die Armor-ProgressBar
+            // Aktualisiert die Armor-ProgressBar
             progressBarManager.setHeroArmor(hero.getArmor());
         } else {
             // Wenn keine Rüstung mehr vorhanden ist, füge den gesamten Schaden der Gesundheit zu

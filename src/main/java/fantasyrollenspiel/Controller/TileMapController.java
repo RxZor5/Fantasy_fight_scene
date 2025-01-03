@@ -20,6 +20,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Der Controller für die Kachelkarte im Spiel.
+ */
 public class TileMapController {
 
     @FXML
@@ -38,7 +41,7 @@ public class TileMapController {
     private ProgressBar levelProgressBar;
 
     @FXML
-    private ScrollPane scrollPane;  // Add ScrollPane field
+    private ScrollPane scrollPane;  // ScrollPane-Feld hinzufügen
 
     @FXML
     private TextArea battleLogTextArea;  // Battle Log TextArea
@@ -59,43 +62,44 @@ public class TileMapController {
 
     private FightController fightController;
 
+    // Held-Variable hinzufügen
+    private Hero hero;
+
+    // SessionCoins-Variable hinzufügen
+    private int sessionCoins = 0;
+    private int sessionIron = 0;
+
+    /**
+     * Initialisiert den TileMapController.
+     */
     public void initialize() {
         animations = new Animations();
         drawTileMap("src/main/resources/Map/tilemap.txt");
         addPlayer();
         setupKeyEvents();
 
-        // Initialize the hero instance
-        Hero hero = new Hero("Spieler", 100, 0, 0);
-        // Initialize controllers and pass hero instance
-        fightController = new FightController();
-        ShopController shopController = new ShopController();
-
-        fightController.setHero(hero);
-        shopController.setHero(hero);
-        shopController.setFightController(fightController);
-
-        // Initialize UI elements
+        // Initialisiert die Heldeninstanz
+        hero = StartGame.hero;
         updateStats();
 
-        // Ensure GridPane can receive key events
+        // Stellt sicher, dass GridPane Tastenereignisse empfangen kann
         gridPane.setFocusTraversable(true);
-        gridPane.requestFocus();  // Request focus on the gridPane
+        gridPane.requestFocus();  // Fordert den Fokus auf das GridPane an
 
-        // Add focus listener to confirm focus
+        // Fokushörer hinzufügen, um den Fokus zu bestätigen
         gridPane.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            System.out.println("GridPane focus: " + newVal);
+            System.out.println("GridPane-Fokus: " + newVal);
         });
 
-        // Check if focus is set initially
-        System.out.println("Initial GridPane has focus: " + gridPane.isFocused());
+        // Überprüft, ob der Fokus anfangs gesetzt ist
+        System.out.println("Hat GridPane initialen Fokus: " + gridPane.isFocused());
 
-        // Set focus on the GridPane when it's clicked
+        // Setzt den Fokus auf das GridPane, wenn darauf geklickt wird
         gridPane.setOnMouseClicked(event -> {
             gridPane.requestFocus();
         });
 
-        // Ensure ScrollPane focus policy doesn't interfere with GridPane focus
+        // Stellt sicher, dass die Fokusrichtlinie von ScrollPane nicht mit dem Fokus von GridPane interferiert
         scrollPane.setFocusTraversable(false);
     }
 
@@ -200,6 +204,9 @@ public class TileMapController {
     }
 
 
+    /**
+     * Fügt den Spieler der Karte hinzu.
+     */
     private void addPlayer() {
         player = new ImageView(new Image("file:src/main/resources/fantasyrollenspiel/Bilder/Player.png"));
         player.setFitWidth(64);
@@ -208,13 +215,21 @@ public class TileMapController {
         animations.orcAnimation(player);
     }
 
+    /**
+     * Richtet die Tastenereignisse ein.
+     */
     private void setupKeyEvents() {
         gridPane.setOnKeyPressed(this::handleKeyPressed);
         gridPane.setFocusTraversable(true);
     }
 
+    /**
+     * Behandelt die gedrückten Tastenereignisse.
+     *
+     * @param event Das Tastenereignis.
+     */
     private void handleKeyPressed(KeyEvent event) {
-        System.out.println("Key pressed: " + event.getCode());
+        System.out.println("Taste gedrückt: " + event.getCode());
         switch (event.getCode()) {
             case W -> movePlayer(playerRow - 1, playerCol);
             case S -> movePlayer(playerRow + 1, playerCol);
@@ -223,12 +238,27 @@ public class TileMapController {
             case E -> {
                 if (playerCol == 9 && (playerRow == 7 || playerRow == 8)) {
                     try {
-                        StartGame.switchScene("/fantasyrollenspiel/fight.fxml", coins, iron, xp);
+                        // Übergabe der Session-Daten an den FightController
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fantasyrollenspiel/fight.fxml"));
+                        Stage stage = (Stage) gridPane.getScene().getWindow();
+                        Scene scene = new Scene(loader.load());
+                        stage.setScene(scene);
+
+                        FightController fightController = loader.getController();
+
+                        // Übergabe der Session-Werte
+                        fightController.setSessionCoins(sessionCoins);
+                        fightController.setSessionIron(sessionIron);
+
+                        // Optional: Zurücksetzen der Session-Werte, falls nach dem Kampf nicht mehr benötigt
+                        sessionCoins = 0;
+                        sessionIron = 0;
+
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-
-            } else if (playerCol == 20 && (playerRow == 7 || playerRow == 8)) {
+                } else if (playerCol == 20 && (playerRow == 7 || playerRow == 8)) {
+                    // Vorherige Methode zum Öffnen des Shops
                     try {
                         Stage stage = (Stage) gridPane.getScene().getWindow();
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fantasyrollenspiel/shop.fxml"));
@@ -236,15 +266,17 @@ public class TileMapController {
                         stage.setScene(scene);
 
                         ShopController shopController = loader.getController();
-                        totalCoins += coins;
-                        totalIron += iron;
-                        System.out.println("Passing coins to ShopController: " + totalCoins + " und iron: " + totalIron);
-                        shopController.setCoins(totalCoins);
-                        shopController.setIron(totalIron);
-                        shopController.setFightController(fightController); // Setzen des FightControllers hier
+                        shopController.setHero(hero);
+                        shopController.setFightController(fightController);
+
+                        // Übergabe der aktuellen Münzen und Eisen
+                        shopController.setCoins(hero.getCoins());
+                        shopController.setIron(hero.getIron());
+
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
+
                 } else if (playerCol == 27 && (playerRow == 7 || playerRow == 8)) {
                     try {
                         Stage stage = new Stage();
@@ -260,88 +292,156 @@ public class TileMapController {
         }
     }
 
+    /**
+     * Bewegt den Spieler auf der Karte.
+     *
+     * @param row Die neue Zeile.
+     * @param col Die neue Spalte.
+     */
     private void movePlayer(int row, int col) {
         if (row >= 0 && row < gridPane.getRowCount() && col >= 0 && col < gridPane.getColumnCount()) {
-            System.out.println("Moving player to row: " + row + ", col: " + col);
+            System.out.println("Bewegt Spieler zu Zeile: " + row + ", Spalte: " + col);
             gridPane.getChildren().remove(player);
             playerRow = row;
             playerCol = col;
             gridPane.add(player, playerCol, playerRow);
-            scrollToPlayer();  // Scroll to player after moving
+            scrollToPlayer();  // Scrollt zum Spieler nach der Bewegung
         }
     }
 
+    /**
+     * Setzt den Helden für den TileMapController.
+     *
+     * @param hero Der Held.
+     */
+    public void setHero(Hero hero) {
+        this.hero = hero;
+        updateStats(); // Aktualisieren der Anzeige nach dem Setzen des Helden
+    }
+
+    /**
+     * Aktualisiert die Statistiken nach dem Kampf.
+     */
+    public void updateStatsAfterFight() {
+        // Hole die Gesamtwerte nach dem Kampf
+        int totalCoinsAfterFight = fightController.getTotalCoins();
+        int totalIronAfterFight = fightController.getTotalIron();
+
+        // Setze die Gesamtwerte im TileMapController
+        setCoins(totalCoinsAfterFight);
+        setIron(totalIronAfterFight);
+    }
+
+    /**
+     * Scrollt zum Spieler auf der Karte.
+     */
     private void scrollToPlayer() {
         double cellHeight = gridPane.getHeight() / gridPane.getRowCount();
         double cellWidth = gridPane.getWidth() / gridPane.getColumnCount();
         double scrollTop = (playerRow * cellHeight) - (scrollPane.getHeight() / 2) + (cellHeight / 2);
         double scrollLeft = (playerCol * cellWidth) - (scrollPane.getWidth() / 2) + (cellWidth / 2);
         scrollPane.setVvalue(scrollTop / (gridPane.getHeight() - scrollPane.getHeight()));
-        scrollPane.setHvalue(scrollLeft / (gridPane.getWidth() - scrollPane.getWidth()));
+        scrollPane.setHvalue(scrollLeft / (gridPane.getWidth() / gridPane.getWidth()));
     }
 
+    /**
+     * Erhöht das Level des Spielers.
+     */
+    private void levelUp() {
+        hero.setLevel(hero.getLevel() + 1);
+        hero.setXp(hero.getXp() - xpThreshold); // Behalte den Überschuss an XP
+        xpThreshold += 50; // Optional: Erhöhe die XP-Schwelle für das nächste Level
+        System.out.println("Spieler hat ein Level aufgestiegen! Neues Level: " + hero.getLevel() + ", Neue XP-Schwelle: " + xpThreshold);
+        updateStats();
+    }
+
+    /**
+     * Aktualisiert die Statistiken des Spielers.
+     */
     private void updateStats() {
-        coinsLabel.setText("Coins: " + coins);
-        ironLabel.setText("Iron: " + iron);
-        playerLevelLabel.setText("Player Level: " + playerLevel);  // Update player level label
-        levelProgressBar.setProgress((double) xp / xpThreshold);  // Aktualisiere die Fortschrittsleiste basierend auf XP und XP-Schwelle
-        if(xp >= xpThreshold){
+        playerLevelLabel.setText("Spielerlevel: " + hero.getLevel());
+        levelProgressBar.setProgress((double) hero.getXp() / xpThreshold);
+
+        if (hero.getXp() >= xpThreshold) {
             levelUp();
         }
     }
 
-    private void levelUp() {
-        playerLevel++;
-        xp -= xpThreshold; // Behalte den Überschuss an XP
-        xpThreshold += 50; // Optional: Erhöhe die XP-Schwelle für das nächste Level
-        System.out.println("Player leveled up! New Level: " + playerLevel + ", New XP Threshold: " + xpThreshold);
+    /**
+     * Setzt die Anzahl der Münzen und aktualisiert die Anzeige.
+     *
+     * @param amount Die Anzahl der Münzen.
+     */
+    public void setCoins(int amount) {
+        hero.setCoins(amount);
+        coinsLabel.setText("Coins: " + amount);
+    }
+
+    /**
+     * Setzt die Menge an Eisen und aktualisiert die Anzeige.
+     *
+     * @param amount Die Menge an Eisen.
+     */
+    public void setIron(int amount) {
+        hero.setIron(amount);
+        ironLabel.setText("Iron: " + amount);
+    }
+
+    /**
+     * Setzt die Erfahrungspunkte und aktualisiert die Statistiken.
+     *
+     * @param amount Die Anzahl der Erfahrungspunkte.
+     */
+    public void setXP(int amount) {
+        hero.setXp(amount);
         updateStats();
     }
 
-
-
-    private void addBattleLogMessage(String message) {
-        battleLogTextArea.appendText(message + "\n");
-    }
-
-    public void setFightController(FightController fightController) {
-        this.fightController = fightController;
-    }
-
+    /**
+     * Fügt die angegebene Anzahl Münzen hinzu und aktualisiert die Anzeige.
+     *
+     * @param amount Die hinzuzufügende Anzahl an Münzen.
+     */
     public void addCoins(int amount) {
         coins += amount;
-        updateStats();
+        sessionCoins += amount;
+        updateCoinsLabel();
     }
 
-    public void setCoins(int amount) {
-        coins = amount;
-        updateStats();
-    }
-
+    /**
+     * Fügt die angegebene Menge Eisen hinzu und aktualisiert die Anzeige.
+     *
+     * @param amount Die hinzuzufügende Menge an Eisen.
+     */
     public void addIron(int amount) {
         iron += amount;
-        updateStats();
+        sessionIron += amount;
+        updateIronLabel();
     }
 
-    public void setIron(int amount) {
-        iron = amount;
-        updateStats();
-    }
-
+    /**
+     * Fügt die angegebene Anzahl Erfahrungspunkte hinzu und aktualisiert die Statistiken.
+     *
+     * @param amount Die hinzuzufügende Anzahl an Erfahrungspunkten.
+     */
     public void addXP(int amount) {
         xp += amount;
-        System.out.println("XP added: " + amount + ", Total XP: " + xp);
-        while (xp >= xpThreshold) {
-            System.out.println("Leveling up! Current XP: " + xp + ", XP Threshold: " + xpThreshold);
-            levelUp();
-        }
+        hero.setXp(hero.getXp() + amount);
         updateStats();
     }
 
-
-    public void setXP(int amount) {
-        xp = amount;
-        updateStats();
+    /**
+     * Aktualisiert das Münzen-Label.
+     */
+    private void updateCoinsLabel() {
+        coinsLabel.setText("Coins: " + coins);
     }
+
+    /**
+     * Aktualisiert das Eisen-Label.
+     */
+    private void updateIronLabel() {
+        ironLabel.setText("Iron: " + iron);
+    }
+
 }
-
